@@ -15,7 +15,11 @@ const options = [
   ['6259', 'sp', '0006', 'Deputado Federal', 'São Paulo'],
   ['6259', 'sp', '0007', 'Deputado Estadual', 'São Paulo'],
 ];
-const api = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
+const fallbackApi = 'https://voto-flow-backend.onrender.com';
+const configuredApi = process.env.NEXT_PUBLIC_API_URL;
+const api = configuredApi?.startsWith('http://') || configuredApi?.startsWith('https://')
+  ? configuredApi
+  : fallbackApi;
 
 export default function Page() {
   const [selected, setSelected] = useState(0);
