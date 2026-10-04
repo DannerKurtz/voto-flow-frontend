@@ -55,17 +55,28 @@ export default function Page() {
     setState('Carregando dados oficiais…');
     load().catch(() => live && setState('Resultado ainda não disponível'));
 
-    const ws = new WebSocket(api.replace(/^http/, 'ws') + '/ws');
-    ws.onopen = () => ws.send(JSON.stringify({ type: 'subscribe', electionCode: choice[0], scopeCode: choice[1], officeCode: choice[2] }));
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === 'result.updated' && live) load().catch(() => undefined);
+    let ws: WebSocket | undefined;
+    let reconnectTimer: ReturnType<typeof setTimeout> | undefined;
+    const connect = () => {
+      ws = new WebSocket(api.replace(/^http/, 'ws') + '/ws');
+      ws.onopen = () => ws?.send(JSON.stringify({ type: 'subscribe', electionCode: choice[0], scopeCode: choice[1], officeCode: choice[2] }));
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'result.updated' && live) load().catch(() => undefined);
+      };
+      ws.onclose = () => {
+        if (live) reconnectTimer = setTimeout(connect, 3_000);
+      };
     };
+    connect();
+    const refreshTimer = setInterval(() => load().catch(() => undefined), 15_000);
 
     return () => {
       live = false;
       controller.abort();
-      ws.close();
+      clearInterval(refreshTimer);
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      ws?.close();
     };
   }, [path, choice]);
 
