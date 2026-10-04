@@ -21,6 +21,10 @@ const api = configuredApi?.startsWith('http://') || configuredApi?.startsWith('h
   ? configuredApi
   : fallbackApi;
 
+function voteTotal(candidate: { vap?: string | number }): number {
+  return Number(String(candidate.vap ?? '0').replace(/\D/g, '')) || 0;
+}
+
 export default function Page() {
   const [selected, setSelected] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
@@ -67,11 +71,12 @@ export default function Page() {
 
   const data = result?.sourcePayload;
   const office = data?.carg?.[0];
-  const candidates = office?.agr?.flatMap((scope: any) => scope.par?.flatMap((party: any) => party.cand?.map((candidate: any) => ({ ...candidate, partyName: party.nm })) ?? []) ?? []) ?? [];
+  const candidates = (office?.agr?.flatMap((scope: any) => scope.par?.flatMap((party: any) => party.cand?.map((candidate: any) => ({ ...candidate, partyName: party.nm })) ?? []) ?? []) ?? [])
+    .sort((left: any, right: any) => voteTotal(right) - voteTotal(left));
 
   return <main>
     <header><b><i />Voto Flow</b><span className={result ? 'live' : 'offline'}>● {state}</span></header>
     <section className="intro"><h1>Apuração 2026</h1><p>Acompanhe a totalização das eleições gerais com dados oficiais armazenados pelo Voto Flow.</p><AvailabilityClock /><label>Resultado acompanhado<select value={selected} onChange={(event) => setSelected(+event.target.value)}>{options.map((option, index) => <option key={option[3]} value={index}>{option[3]} · {option[4]}</option>)}</select></label></section>
-    <section className="grid"><article className="results"><div className="heading"><div><h2>{choice[3]} · {choice[4]}</h2><p>Arquivo EA20 oficial</p></div><strong>{data?.s?.pst ?? '—'}<small> totalizado</small></strong></div>{result ? <><div className="meta"><span>Última atualização<br /><b>{new Date(result.updatedAt).toLocaleString('pt-BR')}</b></span><span>Seções<br /><b>{data?.s?.st ?? '—'} de {data?.s?.ts ?? '—'}</b></span><span>Votos válidos<br /><b>{Number(data?.v?.vv ?? 0).toLocaleString('pt-BR')}</b></span></div><div className="table"><div className="row labels"><span># Candidato</span><span>Votos</span><span>%</span><span>Situação</span></div>{candidates.map((candidate: any, index: number) => <div className="row" key={candidate.sqcand}><span><em>{index + 1}</em><b>{candidate.nmu}</b><small>{candidate.n} · {candidate.partyName}</small></span><span>{Number(candidate.vap).toLocaleString('pt-BR')}</span><span>{candidate.pvap}%</span><span className={candidate.e === 's' ? 'elected' : ''}>{candidate.st}</span></div>)}</div></> : <div className="empty">{state}<br /><button onClick={() => location.reload()}>Tentar novamente</button></div>}</article><aside><article><h3>Evolução da apuração</h3><ApurationChart snapshots={snapshots} /><p>O gráfico é construído apenas com snapshots persistidos pelo backend.</p></article><article><h3>Fonte e integridade</h3><p>Dados recebidos do TSE pelo backend. A autenticidade JWS ainda não está marcada como verificada.</p></article></aside></section>
+    <section className="grid"><article className="results"><div className="heading"><div><h2>{choice[3]} · {choice[4]}</h2><p>Arquivo EA20 oficial</p></div><strong>{data?.s?.pst ?? '—'}<small> totalizado</small></strong></div>{result ? <><div className="meta"><span>Última atualização<br /><b>{new Date(result.updatedAt).toLocaleString('pt-BR')}</b></span><span>Seções<br /><b>{data?.s?.st ?? '—'} de {data?.s?.ts ?? '—'}</b></span><span>Votos válidos<br /><b>{Number(data?.v?.vv ?? 0).toLocaleString('pt-BR')}</b></span></div><div className="table"><div className="row labels"><span># Candidato</span><span>Votos</span><span>%</span><span>Situação</span></div>{candidates.map((candidate: any, index: number) => <div className="row" key={candidate.sqcand}><span><em>{index + 1}</em><b>{candidate.nmu}</b><small>{candidate.n} · {candidate.partyName}</small></span><span>{voteTotal(candidate).toLocaleString('pt-BR')}</span><span>{candidate.pvap}%</span><span className={candidate.e === 's' ? 'elected' : ''}>{candidate.st}</span></div>)}</div></> : <div className="empty">{state}<br /><button onClick={() => location.reload()}>Tentar novamente</button></div>}</article><aside><article><h3>Evolução da apuração</h3><ApurationChart snapshots={snapshots} /><p>O gráfico é construído apenas com snapshots persistidos pelo backend.</p></article><article><h3>Fonte e integridade</h3><p>Dados recebidos do TSE pelo backend. A autenticidade JWS ainda não está marcada como verificada.</p></article></aside></section>
   </main>;
 }
