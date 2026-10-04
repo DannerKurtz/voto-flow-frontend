@@ -1,7 +1,13 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 type Result={electionCode:string;scopeCode:string;officeCode:string;sourcePayload:any;updatedAt:string};
-const options=[['21270','br','0001','Presidente','Brasil'],['21272','sp','0003','Governador','São Paulo'],['21272','ac01120','0005','Senador','Acrelândia']];
+const options=[
+  ['21270','br','0001','Presidente','Brasil'],
+  ['21272','sp','0003','Governador','São Paulo'],
+  ['21272','sp','0005','Senador','São Paulo'],
+  ['21272','sp','0006','Deputado Federal','São Paulo'],
+  ['21272','sp','0007','Deputado Estadual','São Paulo'],
+];
 const api=process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 export default function Page(){const [selected,setSelected]=useState(0);const [result,setResult]=useState<Result|null>(null);const [state,setState]=useState('Carregando dados oficiais…');const choice=options[selected]; const path=`/results/${choice[0]}/${choice[1]}/${choice[2]}`;
 useEffect(()=>{let live=true; setState('Carregando dados oficiais…'); fetch(api+path).then(async r=>{if(!r.ok) throw Error();return r.json()}).then(x=>{if(live){setResult(x);setState('Conectado ao backend')}}).catch(()=>live&&setState('Resultado ainda não disponível'));
