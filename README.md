@@ -27,6 +27,8 @@ O painel apresenta votos, percentuais, apuração, brancos e nulos oficiais. O e
 
 A sigla oficial do partido é mostrada abaixo do nome de cada candidato a presidente e governador quando o backend disponibiliza o campo `party`.
 
+Ao selecionar uma UF no mapa por mouse, toque ou teclado, o cartão exibe o percentual oficial totalizado e, quando disponíveis, as seções totalizadas sobre o total da UF (`secondRound.sections`). O rótulo usa seções eleitorais, conforme o EA20 do TSE, sem tratar o dado como quantidade de urnas físicas.
+
 Ao final da página há um bloco compacto para as disputas estaduais de governador. Ele exibe candidatos, votos, percentuais e totalização enviados pelo backend e recebe mudanças pelo WebSocket. O recurso depende de `GOVERNOR_SECOND_ROUND_TARGETS` no backend e dos alvos EA20 correspondentes em `TSE_POLL_TARGETS`; sem essa configuração, a seção informa que os dados ainda não estão disponíveis.
 
 O frontend não inclui dados de demonstração: todos os resultados apresentados vêm da API/WebSocket do backend, que consulta os recursos oficiais do TSE.

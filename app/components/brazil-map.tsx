@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { MapGeography } from './map/geography';
 import { buildMapBadges, buildMapStates } from './map/model';
 import { stateNames } from './map/geometry';
-import { formatPercentage } from '../lib/format';
+import { formatPercentage, formatVotes } from '../lib/format';
 import type { PresidentialComparison } from '../lib/comparison';
 import { stateAppearance } from '../lib/map-appearance';
 import { candidateTheme, mapTheme } from '../lib/theme';
@@ -35,6 +35,7 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
   }, [viewMode, viewModeRestored]);
 
   const activeAppearance = activeState ? stateAppearance(comparisons[activeState], stateNames[activeState]) : null;
+  const activeRound = activeState ? comparisons[activeState]?.secondRound : null;
 
   const states = useMemo(() => buildMapStates(comparisons), [comparisons]);
   const hoveredShape = states.find((state) => state.code === activeState);
@@ -94,12 +95,16 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
             </div>
           </>
           : <p className="map-hover-pending">Dados ainda não disponíveis</p>}
+        {activeRound && <div className="map-badge-progress">
+          <strong>{formatPercentage(activeRound.totalizationPercentage, true)} totalizado</strong>
+          {activeRound.sections && <span>{formatVotes(activeRound.sections.totalized)} de {formatVotes(activeRound.sections.total)} seções</span>}
+        </div>}
       </div>}
       </div>
 
       <div className="map-tooltip" aria-live="polite">
         <span>{activeState && activeAppearance
-          ? `${stateNames[activeState]}: ${activeAppearance.label.replace(`${stateNames[activeState]}: `, '')}`
+          ? `${stateNames[activeState]}: ${activeAppearance.label.replace(`${stateNames[activeState]}: `, '')}${activeRound ? ` · ${formatPercentage(activeRound.totalizationPercentage)} totalizado${activeRound.sections ? ` · ${formatVotes(activeRound.sections.totalized)} de ${formatVotes(activeRound.sections.total)} seções totalizadas` : ''}` : ''}`
           : 'Passe o mouse, toque ou navegue pelo teclado sobre uma UF para ver o resumo da apuração.'}</span>
       </div>
     </div>}

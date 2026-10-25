@@ -17,6 +17,10 @@ function candidate(value: unknown): value is CandidateResult {
 }
 function round(value: unknown): value is RoundResult {
   return isRecord(value) && typeof value.electionCode === 'string' && percentage(value.totalizationPercentage)
+    && (value.sections === undefined || (isRecord(value.sections)
+      && nonnegative(value.sections.total) && Number.isSafeInteger(value.sections.total)
+      && nonnegative(value.sections.totalized) && Number.isSafeInteger(value.sections.totalized)
+      && value.sections.totalized <= value.sections.total))
     && Array.isArray(value.candidates) && value.candidates.length === 2 && value.candidates.every(candidate)
     && new Set(value.candidates.map((entry) => entry.key)).size === 2;
 }

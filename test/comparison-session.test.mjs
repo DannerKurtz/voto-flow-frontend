@@ -29,6 +29,17 @@ test('preserves optional official presidential parties without accepting invalid
   result.secondRound.candidates[1].party = 13;
   assert.throws(() => parseComparisonList({ results: [result] }));
 });
+test('accepts optional zero and partial section counts and rejects impossible totals', () => {
+  const result = comparison();
+  result.secondRound.sections = { total: 100, totalized: 0 };
+  assert.equal(parseComparisonList({ results: [result] })[0].secondRound.sections.totalized, 0);
+  result.secondRound.sections.totalized = 25;
+  assert.equal(parseComparisonList({ results: [result] })[0].secondRound.sections.totalized, 25);
+  result.secondRound.sections.totalized = 101;
+  assert.throws(() => parseComparisonList({ results: [result] }));
+  result.secondRound.sections.totalized = -1;
+  assert.throws(() => parseComparisonList({ results: [result] }));
+});
 class Socket {
   onopen = null; onclose = null; onerror = null; onmessage = null;
   sent = []; closed = false;
