@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MapGeography } from './map/geography';
 import { buildMapBadges, buildMapStates } from './map/model';
 import { stateNames } from './map/geometry';
@@ -8,11 +8,32 @@ import { formatPercentage } from '../lib/format';
 import type { PresidentialComparison } from '../lib/comparison';
 import { stateAppearance } from '../lib/map-appearance';
 import { candidateTheme, mapTheme } from '../lib/theme';
+import { readMapViewPreference, writeMapViewPreference, type MapViewMode } from '../lib/map-view-preference';
 import { StateVoteLineChart } from './map/state-vote-line-chart';
 
 export function BrazilMap({ comparisons }: { comparisons: Record<string, PresidentialComparison> }) {
   const [activeState, setActiveState] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'leadership' | 'dispute' | 'chart'>('dispute');
+  const [viewMode, setViewMode] = useState<MapViewMode>('dispute');
+  const [viewModeRestored, setViewModeRestored] = useState(false);
+
+  useEffect(() => {
+    try {
+      setViewMode(readMapViewPreference(window.localStorage));
+    } catch {
+      // Keep the default view when browser storage is unavailable.
+    }
+    setViewModeRestored(true);
+  }, []);
+
+  useEffect(() => {
+    if (!viewModeRestored) return;
+    try {
+      writeMapViewPreference(window.localStorage, viewMode);
+    } catch {
+      // The selected view remains usable for this session if storage is unavailable.
+    }
+  }, [viewMode, viewModeRestored]);
+
   const activeAppearance = activeState ? stateAppearance(comparisons[activeState], stateNames[activeState]) : null;
 
   const states = useMemo(() => buildMapStates(comparisons), [comparisons]);

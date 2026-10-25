@@ -16,7 +16,7 @@ export function buildMapStates(comparisons: Record<string, PresidentialCompariso
   });
 }
 export type MapState = ReturnType<typeof buildMapStates>[number];
-export type MapViewMode = 'leadership' | 'dispute';
+export type { MapViewMode } from '../../lib/map-view-preference.ts';
 
 export function buildMapBadges(states: MapState[]) {
   const candidates = states.flatMap((shape) => {

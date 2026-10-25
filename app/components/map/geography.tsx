@@ -5,7 +5,7 @@ import type { MapState, MapViewMode } from './model';
 
 type Props = {
   states: MapState[];
-  viewMode: MapViewMode;
+  viewMode: Exclude<MapViewMode, 'chart'>;
   badgePlacements: BadgePlacement[];
   onActiveStateChange: (code: string | null) => void;
 };
