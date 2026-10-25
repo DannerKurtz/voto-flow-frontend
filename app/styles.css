@@ -10,17 +10,23 @@
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
 
 .map-graphic { aspect-ratio:1; isolation:isolate; position:relative; width:100%; }
+.map-canvas { max-width:760px; }
 .map-graphic > svg { display:block; height:100%; max-height:none; overflow:visible; width:100%; }
 .state-region { cursor:pointer; outline:none; }
 .state-base { stroke-width:2; transition:filter .16s ease,stroke-width .16s ease; vector-effect:non-scaling-stroke; }
 .state-region:hover .state-base,.state-region:focus-visible .state-base { filter:brightness(1.12); stroke:#fff; stroke-width:3.5; }
-.map-floating-badge { background:#fff; border:1px solid #e4eaf2; border-radius:10px; box-shadow:0 5px 18px rgb(16 35 69 / 18%); left:50%; padding:9px 11px 10px; pointer-events:none; position:absolute; transform:translate(-50%,-50%); width:clamp(142px,36%,210px); z-index:2; }
-.map-badge-topline { align-items:center; color:#42516b; display:flex; font-size:11px; gap:6px; justify-content:space-between; line-height:1.1; white-space:nowrap; }
-.map-badge-topline span { font-weight:700; }.map-badge-topline b { color:#697891; font-size:10px; font-weight:600; }
-.map-badge-percentages { display:flex; font-size:16px; font-variant-numeric:tabular-nums; font-weight:800; justify-content:space-between; margin:6px 0 7px; }
+.state-abbreviation { dominant-baseline:middle; fill:#fff; font-size:15px; font-weight:900; paint-order:stroke; pointer-events:none; stroke:#14233e; stroke-linejoin:round; stroke-width:3px; text-anchor:middle; }
+.badge-leader { stroke:#59677c; stroke-dasharray:4 4; stroke-width:1.5; vector-effect:non-scaling-stroke; }
+.map-floating-badge { background:#fff; border:1px solid #d8e0eb; border-radius:8px; box-shadow:0 4px 12px rgb(16 35 69 / 22%); left:50%; padding:7px 9px; pointer-events:none; position:absolute; transform:translate(-50%,-50%); width:clamp(96px,17%,144px); z-index:2; }
+.map-badge-topline { align-items:center; color:#43516a; display:flex; font-size:8px; font-weight:800; gap:4px; line-height:1.1; white-space:nowrap; }
+.map-badge-topline span { font-weight:700; }.badge-dot { background:#0099d8; border-radius:50%; display:inline-block; height:6px; margin-right:4px; width:6px; }.badge-dot-tie { background:#7c1ae8; }
+.map-badge-percentages { align-items:center; display:flex; font-size:12px; font-variant-numeric:tabular-nums; font-weight:900; justify-content:space-between; margin:5px 0 6px; }
 .map-badge-percentages strong:first-child { color:var(--blue); }.map-badge-percentages strong:last-child { color:var(--red); }
+.map-badge-percentages small { color:#9aa6b7; font-size:7px; }
 .map-badge-bar { background:#edf1f6; border-radius:99px; display:flex; height:8px; overflow:visible; position:relative; }
 .map-badge-blue { background:var(--blue); border-radius:99px 0 0 99px; }.map-badge-red { background:var(--red); border-radius:0 99px 99px 0; }
 .map-badge-bar i { background:#fff; border:2px solid #34435a; border-radius:50%; height:14px; left:50%; position:absolute; top:50%; transform:translate(-50%,-50%); width:14px; }
-.legend-swing { background:repeating-linear-gradient(135deg,var(--blue) 0 3px,var(--red) 3px 6px,#7c1ae8 6px 9px); border-radius:2px !important; }
-@media (max-width:640px) { .map-floating-badge { border-radius:8px; padding:7px 8px; width:clamp(126px,43%,158px); }.map-badge-topline { font-size:10px; }.map-badge-topline b { font-size:9px; }.map-badge-percentages { font-size:13px; margin:5px 0 6px; }.map-badge-bar { height:7px; } }
+.legend-swing { background:repeating-linear-gradient(135deg,var(--blue) 0 3px,var(--red) 3px 6px); border:1px solid #d5deeb; border-radius:2px !important; }
+.map-legend { background:var(--wash); border:1px solid var(--line); border-radius:11px; justify-content:center; padding:13px 16px; }
+.map-caption { color:var(--muted); font-size:12px; line-height:1.45; margin:12px 0 0; text-align:center; }.map-caption strong { color:var(--ink); }
+@media (max-width:640px) { .map-floating-badge { border-radius:6px; padding:5px 6px; width:clamp(82px,24%,110px); }.map-badge-topline { font-size:6px; }.badge-dot { height:5px; margin-right:2px; width:5px; }.map-badge-percentages { font-size:9px; margin:4px 0 5px; }.map-badge-percentages small { font-size:6px; }.map-badge-bar { height:6px; }.map-badge-bar i { height:10px; width:10px; }.state-abbreviation { font-size:19px; }.map-legend { justify-content:flex-start; padding:10px; } }

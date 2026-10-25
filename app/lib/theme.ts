@@ -8,5 +8,5 @@ export const mapTheme = {
   neutralStroke: '#aab7c8',
   tension: '#7c1ae8',
   swingMarginPercentagePoints: 5,
-  maximumHatchWidthPercentage: 28,
+  maximumHatchWidthPercentage: 78,
 } as const;
