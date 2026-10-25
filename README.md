@@ -62,14 +62,6 @@ Os testes usam o executor nativo do Node e dados locais, sem consultas ao TSE ou
 
 ## Google Analytics 4
 
-A integração está preparada em `app/components/google-analytics.tsx` e só carrega em produção com um ID válido. Enquanto a variável estiver vazia, nenhum script do Google é renderizado.
-
-1. Crie uma propriedade GA4 e um fluxo de dados **Web** para o endereço público do frontend.
-2. Copie o **ID de medição**, no formato `G-...`.
-3. Na Vercel, configure `NEXT_PUBLIC_GA_MEASUREMENT_ID` somente no ambiente **Production**.
-4. Faça um novo build/deploy: as variáveis `NEXT_PUBLIC_*` são incorporadas ao bundle.
-5. Abra o site publicado e confirme o acesso no relatório **Em tempo real** do GA4.
-
-O ID é público; não use uma chave de API, segredo ou ID `GTM-...`. Não há variável de Analytics no backend. A configuração utiliza o page view padrão do Google tag, sem eventos personalizados de candidatos, estados ou preferências. Google Signals e personalização de anúncios estão desativados. Não há implementação de banner de consentimento nesta etapa.
+O Google tag é carregado em produção por `app/components/google-analytics.tsx`, usando o ID de medição `G-HNV8XRED08`. Ele é incluído uma vez no layout global e registra page views padrão, sem eventos personalizados de candidatos, estados ou preferências. Google Signals e personalização de anúncios estão desativados. Não há banner de consentimento nesta etapa.
 
 O script usa [`next/script` com `afterInteractive`](https://nextjs.org/docs/app/api-reference/components/script) e a [configuração oficial do Google tag](https://developers.google.com/tag-platform/gtagjs/configure). Não carregue o mesmo ID por outro snippet ou GTM para evitar medições duplicadas. A entrega real de eventos depende do ID, do deploy e da verificação no GA4; os testes locais verificam apenas configuração e inicialização.
