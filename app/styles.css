@@ -5,6 +5,52 @@
   --line:#dbe3ef;
   --wash:#f8fafc;
   --green:#079455;
+  --page:#ffffff;
+  --surface:#ffffff;
+  --surface-raised:#f1f5fb;
+  --text-subtle:#43516a;
+  --map-neutral:#e5eaf1;
+  --map-neutral-stroke:#aab7c8;
+  --map-track:#edf1f6;
+  --map-marker:#34435a;
+  --shadow:0 4px 12px rgb(16 35 69 / 22%);
+  --notice-bg:#fff8e8;
+  --notice-border:#f1cf83;
+  --notice-text:#744900;
+  --toggle-active-bg:#12254d;
+  color-scheme:light;
+}
+html[data-theme="dark"] {
+  --navy:#e3ebff;
+  --ink:#e5eaf4;
+  --muted:#a8b4c9;
+  --line:#354259;
+  --wash:#1d293b;
+  --green:#4ade9a;
+  --page:#101725;
+  --surface:#182234;
+  --surface-raised:#202d42;
+  --text-subtle:#c0cadd;
+  --map-neutral:#3a4659;
+  --map-neutral-stroke:#697991;
+  --map-track:#39465a;
+  --map-marker:#e2e8f0;
+  --shadow:0 5px 18px rgb(0 0 0 / 42%);
+  --notice-bg:#332b1d;
+  --notice-border:#705b30;
+  --notice-text:#f3d99a;
+  --toggle-active-bg:#3b4d68;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark) {
+  html:not([data-theme]) {
+    --navy:#e3ebff; --ink:#e5eaf4; --muted:#a8b4c9; --line:#354259;
+    --wash:#1d293b; --green:#4ade9a; --page:#101725; --surface:#182234;
+    --surface-raised:#202d42; --text-subtle:#c0cadd; --map-neutral:#3a4659; --map-neutral-stroke:#697991;
+    --map-track:#39465a; --map-marker:#e2e8f0; --shadow:0 5px 18px rgb(0 0 0 / 42%);
+    --notice-bg:#332b1d; --notice-border:#705b30; --notice-text:#f3d99a;
+    --toggle-active-bg:#3b4d68; color-scheme:dark;
+  }
 }
 * {
   box-sizing:border-box;
@@ -14,7 +60,7 @@ html {
 }
 body {
   margin:0;
-  background:#fff;
+  background:var(--page);
   color:var(--ink);
   font-family:Arial,sans-serif;
 }
@@ -27,11 +73,62 @@ button,input,select {
   padding:0 38px 48px;
 }
 .site-header {
-  height:76px;
+  min-height:76px;
   border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:18px;
+}
+.header-identity {
+  align-items:center;
+  display:flex;
+  flex:1;
+  justify-content:space-between;
+  min-width:0;
+}
+.header-actions {
+  align-items:center;
+  display:flex;
+  gap:12px;
+}
+.theme-toggle {
+  align-items:center;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:var(--ink);
+  cursor:pointer;
+  display:inline-flex;
+  font-size:13px;
+  font-weight:700;
+  gap:7px;
+  min-height:38px;
+  padding:7px 11px;
+  white-space:nowrap;
+}
+.theme-toggle:hover { background:var(--wash); }
+.theme-toggle:focus-visible { outline:3px solid var(--blue); outline-offset:2px; }
+.theme-toggle span { font-size:17px; line-height:1; }
+.independence-callout {
+  align-items:flex-start;
+  background:var(--surface-raised);
+  border:1px solid var(--line);
+  border-left:4px solid var(--navy);
+  border-radius:8px;
+  color:var(--navy);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  padding:8px 12px;
+}
+.independence-callout strong {
+  font-size:10px;
+  letter-spacing:.08em;
+}
+.independence-callout span {
+  font-size:12px;
+  font-weight:700;
 }
 .brand {
   color:var(--navy);
@@ -61,7 +158,7 @@ button,input,select {
   color:var(--green);
 }
 .status-reconnecting {
-  color:#a66b00;
+  color:#c88600;
 }
 .status-unavailable {
   color:#b42318;
@@ -96,10 +193,10 @@ button,input,select {
 }
 .data-notice {
   align-items:flex-start;
-  background:#fff8e8;
-  border:1px solid #f1cf83;
+  background:var(--notice-bg);
+  border:1px solid var(--notice-border);
   border-radius:12px;
-  color:#744900;
+  color:var(--notice-text);
   display:flex;
   flex-direction:column;
   gap:5px;
@@ -116,7 +213,7 @@ button,input,select {
   grid-template-columns:minmax(220px,.8fr) minmax(480px,1.7fr) minmax(220px,.8fr);
 }
 .candidate-summary,.map-panel,.official-summary article {
-  background:#fff;
+  background:var(--surface);
   border:1px solid var(--line);
   border-radius:14px;
 }
@@ -234,7 +331,7 @@ button,input,select {
 .map-view-toggle button {
   background:transparent;
   border:0;
-  color:var(--muted);
+  color:var(--ink);
   cursor:pointer;
   font-size:12px;
   font-weight:800;
@@ -244,7 +341,7 @@ button,input,select {
   border-left:1px solid var(--line);
 }
 .map-view-toggle button.is-active {
-  background:var(--ink);
+  background:var(--toggle-active-bg);
   color:#fff;
 }
 .map-view-toggle button:focus-visible {
@@ -278,6 +375,10 @@ button,input,select {
 .map-tooltip strong {
   color:var(--ink);
 }
+.map-tooltip span {
+  min-width:0;
+  overflow-wrap:anywhere;
+}
 .map-legend {
   display:flex;
   flex-wrap:wrap;
@@ -304,7 +405,7 @@ button,input,select {
   background:var(--red);
 }
 .legend-neutral {
-  background:#e5eaf1;
+  background:var(--map-neutral);
   border:1px solid var(--line);
 }
 .official-summary {
@@ -328,12 +429,33 @@ button,input,select {
   margin:9px 0 5px;
 }
 .source-note {
-  border-top:1px solid var(--line);
   color:var(--muted);
   font-size:13px;
   line-height:1.5;
+  margin:0;
+}
+.site-footer {
+  border-top:1px solid var(--line);
+  display:grid;
+  gap:16px;
   margin-top:30px;
   padding-top:19px;
+}
+.project-disclaimer {
+  background:var(--wash);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px 16px;
+}
+.project-disclaimer strong {
+  color:var(--ink);
+  font-size:13px;
+}
+.project-disclaimer p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin:5px 0 0;
 }
 .governor-runoffs {
   border-top:1px solid var(--line);
@@ -363,7 +485,7 @@ button,input,select {
   border:1px solid var(--line);
   border-radius:11px;
   min-width:0;
-  padding:15px;
+  padding:18px;
 }
 .governor-runoff-card-heading {
   align-items:baseline;
@@ -373,12 +495,13 @@ button,input,select {
   margin-bottom:12px;
 }
 .governor-runoff-card-heading h3 {
-  font-size:16px;
+  font-size:18px;
+  letter-spacing:-.02em;
   margin:0;
 }
 .governor-runoff-card-heading span,.governor-runoff-pending,.governor-runoff-footnote {
   color:var(--muted);
-  font-size:12px;
+  font-size:13px;
 }
 .governor-runoff-candidates {
   display:grid;
@@ -395,19 +518,20 @@ button,input,select {
   display:flex;
   flex-direction:column;
   overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-size:12px;
+  font-size:15px;
+  font-weight:700;
+  line-height:1.25;
+  overflow-wrap:anywhere;
 }
-.governor-runoff-candidate-name small { color:var(--muted); font-size:10px; }
-.governor-runoff-candidate strong { font-size:19px; }
-.governor-runoff-candidate small { color:var(--muted); font-size:11px; }
+.governor-runoff-candidate-name small { color:var(--muted); font-size:12px; font-weight:600; }
+.governor-runoff-candidate strong { font-size:23px; letter-spacing:-.03em; }
+.governor-runoff-candidate > small { color:var(--muted); font-size:13px; }
 .governor-runoff-vote-bar {
-  background:#e5eaf1;
+  background:var(--map-neutral);
   border-radius:5px;
   display:flex;
-  height:7px;
-  margin-top:12px;
+  height:9px;
+  margin-top:15px;
   overflow:hidden;
 }
 .governor-runoff-vote-bar i { display:block; height:100%; }
@@ -441,7 +565,26 @@ button,input,select {
   .governor-runoffs-heading h2 { font-size:22px; }
   .governor-runoff-grid { grid-template-columns:1fr; }
   .site-header {
-    height:64px;
+    align-items:stretch;
+    flex-direction:column;
+    gap:10px;
+    padding:12px 0;
+  }
+  .header-identity {
+    width:100%;
+  }
+  .header-actions {
+    justify-content:space-between;
+  }
+  .independence-callout {
+    align-items:center;
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:4px 9px;
+    padding:8px 10px;
+  }
+  .independence-callout span {
+    font-size:11px;
   }
   .brand {
     font-size:24px;
@@ -593,10 +736,10 @@ button,input,select {
   vector-effect:non-scaling-stroke;
 }
 .map-floating-badge {
-  background:#fff;
-  border:1px solid #d8e0eb;
+  background:var(--surface);
+  border:1px solid var(--line);
   border-radius:8px;
-  box-shadow:0 4px 12px rgb(16 35 69 / 22%);
+  box-shadow:var(--shadow);
   left:50%;
   padding:7px 9px;
   pointer-events:none;
@@ -605,9 +748,24 @@ button,input,select {
   width:clamp(96px,17%,144px);
   z-index:2;
 }
+.map-hover-badge {
+  z-index:4;
+}
+.map-hover-badge .map-badge-topline {
+  font-size:13px;
+  letter-spacing:.04em;
+}
+.map-hover-pending {
+  color:var(--muted);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.3;
+  margin:6px 0 1px;
+  overflow-wrap:anywhere;
+}
 .map-badge-topline {
   align-items:center;
-  color:#43516a;
+  color:var(--text-subtle);
   display:flex;
   font-size:8px;
   font-weight:800;
@@ -645,11 +803,11 @@ button,input,select {
   color:var(--red);
 }
 .map-badge-percentages small {
-  color:#9aa6b7;
+  color:var(--muted);
   font-size:7px;
 }
 .map-badge-bar {
-  background:#edf1f6;
+  background:var(--map-track);
   border-radius:99px;
   display:flex;
   height:8px;
@@ -665,8 +823,8 @@ button,input,select {
   border-radius:0 99px 99px 0;
 }
 .map-badge-bar i {
-  background:#fff;
-  border:2px solid #34435a;
+  background:var(--surface);
+  border:2px solid var(--map-marker);
   border-radius:50%;
   height:14px;
   left:50%;
@@ -706,6 +864,9 @@ button,input,select {
   .map-badge-topline {
     font-size:6px;
   }
+  .map-hover-badge .map-badge-topline {
+    font-size:10px;
+  }
   .badge-dot {
     height:5px;
     margin-right:2px;
@@ -740,7 +901,7 @@ button,input,select {
   margin-top:20px;
   padding:12px 16px;
   border-left:4px solid #d19a00;
-  background:#f6f9fc;
+  background:var(--surface-raised);
 }
 .availability.available {
   border-color:#079455;

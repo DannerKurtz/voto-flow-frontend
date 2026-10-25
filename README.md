@@ -26,6 +26,8 @@ O painel apresenta votos, percentuais, apuração, brancos e nulos oficiais. O e
 
 Ao final da página há um bloco compacto para as disputas estaduais de governador. Ele exibe candidatos, votos, percentuais e totalização enviados pelo backend e recebe mudanças pelo WebSocket. O recurso depende de `GOVERNOR_SECOND_ROUND_TARGETS` no backend e dos alvos EA20 correspondentes em `TSE_POLL_TARGETS`; sem essa configuração, a seção informa que os dados ainda não estão disponíveis.
 
+O frontend não inclui dados de demonstração: todos os resultados apresentados vêm da API/WebSocket do backend, que consulta os recursos oficiais do TSE.
+
 ## Mapa e fotos
 
 O mapa é um SVG local gerado a partir da [API de Malhas do IBGE](https://servicodados.ibge.gov.br/api/docs/malhas?versao=3), sem biblioteca de mapas ou GeoJSON em runtime.

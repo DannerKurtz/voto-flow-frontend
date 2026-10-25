@@ -4,8 +4,8 @@ export const candidateTheme = {
 } as const;
 
 export const mapTheme = {
-  neutral: '#e5eaf1',
-  neutralStroke: '#aab7c8',
+  neutral: 'var(--map-neutral)',
+  neutralStroke: 'var(--map-neutral-stroke)',
   tension: '#7c1ae8',
   swingMarginPercentagePoints: 5,
   maximumHatchWidthPercentage: 78,

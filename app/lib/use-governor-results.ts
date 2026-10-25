@@ -8,10 +8,12 @@ import { startGovernorSession } from './realtime/governor-session';
 
 export function useGovernorResults() {
   const [state, setState] = useState<GovernorState>({ results: {}, status: 'loading', error: null });
-  useEffect(() => startGovernorSession({
-    load: loadGovernors,
-    createSocket: () => new WebSocket(websocketUrl()),
-    onChange: setState,
-  }), []);
+  useEffect(() => {
+    return startGovernorSession({
+      load: loadGovernors,
+      createSocket: () => new WebSocket(websocketUrl()),
+      onChange: setState,
+    });
+  }, []);
   return state;
 }

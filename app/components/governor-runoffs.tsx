@@ -1,5 +1,3 @@
-'use client';
-
 import { formatPercentage, formatVotes } from '../lib/format';
 import { governorScopeName } from '../lib/governors';
 import { useGovernorResults } from '../lib/use-governor-results';
@@ -46,7 +44,7 @@ export function GovernorRunoffs() {
         </article>;
       })}
     </div>}
-    {!error && states.length === 0 && <p className="governor-runoff-notice">Aguardando a configuração dos resultados estaduais no backend.</p>}
+    {!error && states.length === 0 && <p className="governor-runoff-notice">{status === 'loading' ? 'Carregando resultados estaduais oficiais…' : 'Aguardando resultados oficiais configurados no backend.'}</p>}
     <p className="governor-runoff-footnote">Dados oficiais do TSE, atualizados pelo Voto Flow.</p>
   </section>;
 }

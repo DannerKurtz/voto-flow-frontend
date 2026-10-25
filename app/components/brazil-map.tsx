@@ -15,6 +15,9 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
   const activeAppearance = activeState ? stateAppearance(comparisons[activeState], stateNames[activeState]) : null;
 
   const states = useMemo(() => buildMapStates(comparisons), [comparisons]);
+  const hoveredShape = states.find((state) => state.code === activeState);
+  const hoverX = hoveredShape ? hoveredShape.centerX / 10 : 50;
+  const hoverAlignment = hoverX <= 20 ? 'left' : hoverX >= 80 ? 'right' : 'center';
   const { badgePlacements, disputedCount } = useMemo(() => buildMapBadges(states), [states]);
 
   return <section className="map-panel" aria-labelledby="map-title">
@@ -30,7 +33,7 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
       <div className="map-graphic">
       <MapGeography states={states} viewMode={viewMode} badgePlacements={badgePlacements} onActiveStateChange={setActiveState} />
 
-      {viewMode === 'dispute' && badgePlacements.map(({ state, x, y }) => {
+      {viewMode === 'dispute' && badgePlacements.filter(({ state }) => state.code !== activeState).map(({ state, x, y }) => {
         const tag = state.margin < 1 ? 'VOTO A VOTO' : 'DISPUTA ACIRRADA';
         return <div
           key={`badge-${state.code}`}
@@ -47,12 +50,34 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
           </div>
         </div>;
       })}
+
+      {activeState && activeAppearance && hoveredShape && <div
+        className="map-floating-badge map-hover-badge"
+        style={{
+          left: `${Math.max(3, Math.min(97, hoverX))}%`,
+          top: `${Math.max(10, Math.min(90, hoveredShape.centerY / 10))}%`,
+          transform: `translate(${hoverAlignment === 'left' ? '0' : hoverAlignment === 'right' ? '-100%' : '-50%'}, -50%)`,
+        }}
+        aria-label={activeAppearance.label}
+      >
+        <div className="map-badge-topline"><span>{activeState.toUpperCase()}</span></div>
+        {activeAppearance.shares
+          ? <>
+            <div className="map-badge-percentages"><strong>{formatPercentage(activeAppearance.shares.flavio, true)}</strong><small>VS</small><strong>{formatPercentage(activeAppearance.shares.lula, true)}</strong></div>
+            <div className="map-badge-bar" role="img" aria-label={`Flávio ${formatPercentage(activeAppearance.shares.flavio, true)}, Lula ${formatPercentage(activeAppearance.shares.lula, true)}`}>
+              <span className="map-badge-blue" style={{ width: `${activeAppearance.shares.flavio}%` }} />
+              <span className="map-badge-red" style={{ width: `${activeAppearance.shares.lula}%` }} />
+              <i aria-hidden="true" />
+            </div>
+          </>
+          : <p className="map-hover-pending">Dados ainda não disponíveis</p>}
+      </div>}
       </div>
 
       <div className="map-tooltip" aria-live="polite">
-        {activeState && activeAppearance
-          ? <><strong>{stateNames[activeState]}</strong><span>{activeAppearance.label.replace(`${stateNames[activeState]}: `, '')}</span></>
-          : <span>Passe o mouse ou navegue pelo teclado para consultar uma UF.</span>}
+        <span>{activeState && activeAppearance
+          ? `${stateNames[activeState]}: ${activeAppearance.label.replace(`${stateNames[activeState]}: `, '')}`
+          : 'Passe o mouse, toque ou navegue pelo teclado sobre uma UF para ver o resumo da apuração.'}</span>
       </div>
     </div>
 

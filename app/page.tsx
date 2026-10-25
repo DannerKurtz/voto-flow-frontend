@@ -6,6 +6,7 @@ import { BrazilMap } from './components/brazil-map';
 import { CandidateSummary } from './components/candidate-summary';
 import { usePresidentialComparisons } from './lib/use-presidential-comparisons';
 import { GovernorRunoffs } from './components/governor-runoffs';
+import { ThemeToggle } from './components/theme-toggle';
 
 const statusLabels = {
   loading: 'Carregando dados oficiais',
@@ -21,8 +22,17 @@ export default function Page() {
 
   return <main className="second-round-page">
     <header className="site-header">
-      <a className="brand" href="#conteudo" aria-label="Voto Flow, ir para o conteúdo"><i aria-hidden="true" />Voto Flow</a>
-      <span className={`connection-status status-${status}`}><b aria-hidden="true">●</b> {statusLabels[status]}</span>
+      <div className="header-identity">
+        <a className="brand" href="#conteudo" aria-label="Voto Flow, ir para o conteúdo"><i aria-hidden="true" />Voto Flow</a>
+        <span className={`connection-status status-${status}`}><b aria-hidden="true">●</b> {statusLabels[status]}</span>
+      </div>
+      <div className="header-actions">
+        <ThemeToggle />
+        <aside className="independence-callout" aria-label="Independência política e partidária">
+          <strong>PROJETO INDEPENDENTE</strong>
+          <span>Sem apoio político ou partidário</span>
+        </aside>
+      </div>
     </header>
     <section id="conteudo" className="dashboard-intro" aria-labelledby="page-title">
       <div>
@@ -45,6 +55,12 @@ export default function Page() {
       <article><span>Estimativa</span><strong>{national?.estimatedSurplus.eligible ? 'Disponível' : 'Aguardando base'}</strong><small>Não é um dado oficial do TSE</small></article>
     </section>
     <GovernorRunoffs />
-    <footer className="source-note">A estimativa de excedente só é exibida após os dois candidatos alcançarem sua base do primeiro turno em cada abrangência. Nulos e brancos permanecem separados como dados oficiais.</footer>
+    <footer className="site-footer">
+      <p className="source-note">A estimativa de excedente só é exibida após os dois candidatos alcançarem sua base do primeiro turno em cada abrangência. Nulos e brancos permanecem separados como dados oficiais.</p>
+      <section className="project-disclaimer" aria-label="Sobre o projeto">
+        <strong>Projeto desenvolvido para fins de estudo</strong>
+        <p>O objetivo é consumir uma API externa e apresentar os dados recebidos de forma dinâmica. Este site não possui apoio, vínculo ou representação política ou partidária.</p>
+      </section>
+    </footer>
   </main>;
 }
