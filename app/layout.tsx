@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { CSSProperties, ReactNode } from 'react';
+import { GoogleAnalytics } from './components/google-analytics';
 import { candidateTheme, mapTheme } from './lib/theme';
 import './styles.css';
 
@@ -16,6 +17,6 @@ const themeVariables = {
 
 export default function Layout({ children }: { children: ReactNode }) {
   return <html lang="pt-BR" style={themeVariables}>
-    <body>{children}</body>
+    <body>{children}<GoogleAnalytics /></body>
   </html>;
 }
