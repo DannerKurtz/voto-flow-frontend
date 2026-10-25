@@ -922,6 +922,101 @@ button,input,select {
   overflow:visible;
   width:100%;
 }
+.national-line-chart svg {
+  min-width:0;
+}
+.national-line-chart .line-chart-grid text,
+.national-line-chart .line-chart-state-label {
+  font-size:17px;
+}
+.national-chart-plot {
+  position:relative;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--wash);
+  padding:14px 6px 0;
+}
+.national-chart-plot:focus-visible {
+  outline:2px solid var(--ink);
+  outline-offset:3px;
+}
+.national-chart-plot svg {
+  touch-action:pan-y;
+}
+.national-chart-selection line {
+  stroke:var(--ink);
+  stroke-width:1.5;
+  stroke-dasharray:2 3;
+}
+.national-chart-selection rect {
+  fill:var(--ink);
+}
+.national-chart-selection text {
+  fill:var(--surface);
+  font-size:15px;
+}
+.national-chart-dot {
+  stroke:var(--surface);
+  stroke-width:1.5;
+}
+.national-chart-tooltip {
+  position:absolute;
+  top:18px;
+  z-index:1;
+  width:240px;
+  max-width:calc(100% - 16px);
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  background:var(--surface);
+  color:var(--ink);
+  box-shadow:0 3px 12px #00000012;
+  pointer-events:none;
+}
+.national-chart-tooltip-row {
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) auto;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+}
+.national-chart-tooltip-row + .national-chart-tooltip-row {
+  margin-top:8px;
+}
+.national-chart-tooltip-row strong {
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+}
+.national-chart-party {
+  display:grid;
+  place-items:center;
+  width:24px;
+  height:22px;
+  border-radius:4px;
+  color:#ffffff;
+  font-size:11px;
+  font-weight:700;
+}
+.national-chart-party-flavio {
+  background:color-mix(in srgb,var(--blue) 80%,#000000);
+}
+.national-chart-party-lula {
+  background:color-mix(in srgb,var(--red) 80%,#000000);
+}
+.sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+@media (max-width:640px) {
+  .national-line-chart .line-chart-grid text,
+  .national-line-chart .line-chart-state-label {
+    font-size:24px;
+  }
+}
 .line-chart-grid line {
   stroke:var(--line);
   stroke-width:1;

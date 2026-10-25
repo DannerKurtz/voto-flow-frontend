@@ -18,6 +18,7 @@ pnpm dev
 ## Dados consumidos
 
 - `GET /results/second-round/president`
+- `GET /results/second-round/president/br/history`
 - `second-round.comparison.updated` no WebSocket `/ws`
 - `GET /results/second-round/governors`
 - `second-round.governor.updated` no WebSocket `/ws`
@@ -33,6 +34,8 @@ O frontend não inclui dados de demonstração: todos os resultados apresentados
 O mapa é um SVG local gerado a partir da [API de Malhas do IBGE](https://servicodados.ibge.gov.br/api/docs/malhas?versao=3), sem biblioteca de mapas ou GeoJSON em runtime.
 
 As fotos dos candidatos ficam em `public/candidates/` e são servidas localmente, sem hotlink. Os caminhos e textos alternativos estão configurados em `app/lib/theme.ts`.
+
+A opção **Gráfico** mostra a evolução dos percentuais nacionais oficiais do segundo turno: azul para Flávio Bolsonaro e vermelho para Lula. O eixo horizontal usa os horários dos snapshots persistidos (exibidos em Brasília), e o vertical parte de 0%, com divisões de 25 pontos percentuais. O cursor pontilhado e o tooltip mostram os dois candidatos no mesmo horário ao passar o mouse, tocar ou usar as setas do teclado. O histórico é recuperado ao abrir o gráfico e atualizado quando a comparação nacional muda via WebSocket. Um único snapshot é apresentado como pontos, aguardando novas contagens; nenhum histórico anterior à coleta é inventado. Falhas temporárias preservam os pontos já carregados e permitem tentar novamente. As opções Liderança e Disputa continuam mostrando o mapa por UF.
 
 ## Verificação
 

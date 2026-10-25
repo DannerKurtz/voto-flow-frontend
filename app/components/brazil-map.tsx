@@ -9,7 +9,7 @@ import type { PresidentialComparison } from '../lib/comparison';
 import { stateAppearance } from '../lib/map-appearance';
 import { candidateTheme, mapTheme } from '../lib/theme';
 import { readMapViewPreference, writeMapViewPreference, type MapViewMode } from '../lib/map-view-preference';
-import { StateVoteLineChart } from './map/state-vote-line-chart';
+import { NationalVoteLineChart } from './map/national-vote-line-chart';
 
 export function BrazilMap({ comparisons }: { comparisons: Record<string, PresidentialComparison> }) {
   const [activeState, setActiveState] = useState<string | null>(null);
@@ -44,15 +44,15 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
 
   return <section className="map-panel" aria-labelledby="map-title">
     <div className="map-heading">
-      <div><p className="eyebrow">Por unidade federativa</p><h2 id="map-title">{viewMode === 'chart' ? 'Gráfico por estado' : 'Mapa eleitoral'}</h2></div>
-      <div className="map-view-toggle" role="group" aria-label="Modo de visualização dos resultados por estado">
+      <div><p className="eyebrow">{viewMode === 'chart' ? 'Apuração nacional' : 'Por unidade federativa'}</p><h2 id="map-title">{viewMode === 'chart' ? 'Evolução da disputa' : 'Mapa eleitoral'}</h2></div>
+      <div className="map-view-toggle" role="group" aria-label="Modo de visualização dos resultados">
         <button type="button" className={viewMode === 'leadership' ? 'is-active' : ''} aria-pressed={viewMode === 'leadership'} onClick={() => setViewMode('leadership')}>Liderança</button>
         <button type="button" className={viewMode === 'dispute' ? 'is-active' : ''} aria-pressed={viewMode === 'dispute'} onClick={() => setViewMode('dispute')}>Disputa</button>
         <button type="button" className={viewMode === 'chart' ? 'is-active' : ''} aria-pressed={viewMode === 'chart'} onClick={() => setViewMode('chart')}>Gráfico</button>
       </div>
     </div>
 
-    {viewMode === 'chart' ? <StateVoteLineChart comparisons={comparisons} /> : <div className="map-canvas">
+    {viewMode === 'chart' ? <NationalVoteLineChart comparison={comparisons.br} /> : <div className="map-canvas">
       <div className={`map-graphic map-mode-${viewMode}`}>
       <MapGeography states={states} viewMode={viewMode} badgePlacements={badgePlacements} onActiveStateChange={setActiveState} />
 
