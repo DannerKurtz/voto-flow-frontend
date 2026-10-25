@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { getAvailabilityClockState } from '../lib/availability-clock-state';
 
 const target = new Date(process.env.NEXT_PUBLIC_RESULTS_START_AT ?? '2026-10-25T17:00:00-03:00').getTime();
 function formatDuration(milliseconds: number): string {
@@ -9,7 +10,7 @@ function formatDuration(milliseconds: number): string {
     .map((value) => String(value).padStart(2, '0')).join(':');
 }
 
-export function AvailabilityClock() {
+export function AvailabilityClock({ officialResultsAvailable }: { officialResultsAvailable: boolean }) {
   // Server and first client render must agree; the clock starts after hydration.
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
@@ -18,10 +19,10 @@ export function AvailabilityClock() {
     return () => clearInterval(id);
   }, []);
   if (!Number.isFinite(target)) return null;
-  const open = now !== null && now >= target;
-  return <div className={`availability ${open ? 'available' : ''}`}>
-    <span>{open ? 'Consulta liberada há' : 'Consulta oficial em'}</span>
-    <strong>{now === null ? '--:--:--' : formatDuration(Math.abs(target - now))}</strong>
-    <small>Horário de Brasília</small>
+  const clock = getAvailabilityClockState(now, target, officialResultsAvailable);
+  return <div className={`availability ${clock.status === 'available' ? 'available' : ''}`}>
+    <span>{clock.status === 'countdown' ? 'Consulta oficial em' : clock.status === 'waiting' ? 'Aguardando dados oficiais há' : 'Consulta liberada'}</span>
+    <strong>{clock.status === 'available' ? 'Dados oficiais' : `${clock.status === 'waiting' ? '+' : ''}${now === null ? '--:--:--' : formatDuration(clock.milliseconds)}`}</strong>
+    <small>{clock.status === 'available' ? 'Apuração atualizada em tempo real' : clock.status === 'waiting' ? 'Acréscimo após o horário previsto · Brasília' : 'Horário de Brasília'}</small>
   </div>;
 }

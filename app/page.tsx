@@ -40,7 +40,7 @@ export default function Page() {
         <h1 id="page-title">Apuração presidencial</h1>
         <p>Dados oficiais da Justiça Eleitoral, recebidos e normalizados pelo Voto Flow.</p>
       </div>
-      <AvailabilityClock />
+      <AvailabilityClock officialResultsAvailable={national?.availability === 'ready' && national.secondRound !== null} />
     </section>
     {error && <section className="data-notice" role="status"><strong>Dados ainda não disponíveis.</strong><span>{error}</span></section>}
     <section className="candidate-map-layout" aria-label="Comparação dos candidatos e mapa do Brasil">
