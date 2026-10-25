@@ -561,6 +561,16 @@ button,input,select {
   .second-round-page {
     padding:0 18px 34px;
   }
+  .map-heading {
+    flex-wrap:wrap;
+  }
+  .map-view-toggle {
+    width:100%;
+  }
+  .map-view-toggle button {
+    flex:1;
+    white-space:nowrap;
+  }
   .governor-runoffs-heading { align-items:flex-start; flex-direction:column; }
   .governor-runoffs-heading h2 { font-size:22px; }
   .governor-runoff-grid { grid-template-columns:1fr; }
@@ -854,6 +864,131 @@ button,input,select {
 }
 .map-caption strong {
   color:var(--ink);
+}
+.state-line-chart {
+  margin:20px auto 4px;
+  max-width:760px;
+}
+.state-line-chart-scroll {
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+}
+.state-line-chart svg {
+  display:block;
+  height:auto;
+  min-width:680px;
+  overflow:visible;
+  width:100%;
+}
+.line-chart-grid line {
+  stroke:var(--line);
+  stroke-width:1;
+}
+.line-chart-grid text {
+  fill:var(--muted);
+  font-size:12px;
+}
+.line-chart-midpoint line {
+  stroke:var(--muted);
+  stroke-dasharray:5 5;
+  stroke-width:1.5;
+}
+.line-chart-series {
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:4;
+  vector-effect:non-scaling-stroke;
+}
+.line-chart-flavio {
+  stroke:var(--blue);
+}
+.line-chart-lula {
+  stroke:var(--red);
+}
+.line-chart-point {
+  stroke:var(--surface);
+  stroke-width:2;
+  vector-effect:non-scaling-stroke;
+}
+.line-chart-point-flavio {
+  fill:var(--blue);
+}
+.line-chart-point-lula {
+  fill:var(--red);
+}
+.line-chart-point:hover {
+  r:6;
+}
+.line-chart-state-label {
+  fill:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+.state-line-chart-legend {
+  align-items:center;
+  background:var(--wash);
+  border:1px solid var(--line);
+  border-radius:11px;
+  color:var(--ink);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  justify-content:center;
+  margin-top:12px;
+  padding:12px 14px;
+}
+.state-line-chart-legend span {
+  align-items:center;
+  display:inline-flex;
+  gap:7px;
+}
+.line-chart-key {
+  border-radius:50%;
+  height:10px;
+  width:10px;
+}
+.line-chart-key-flavio {
+  background:var(--blue);
+}
+.line-chart-key-lula {
+  background:var(--red);
+}
+.state-line-chart-legend .line-chart-note {
+  color:var(--muted);
+  font-size:12px;
+}
+.state-line-chart-data {
+  color:var(--ink);
+  margin-top:12px;
+}
+.state-line-chart-data summary {
+  color:var(--muted);
+  cursor:pointer;
+  font-size:13px;
+  text-align:center;
+}
+.state-line-chart-table-scroll {
+  margin-top:10px;
+  overflow-x:auto;
+}
+.state-line-chart-data table {
+  border-collapse:collapse;
+  font-size:13px;
+  min-width:520px;
+  text-align:right;
+  width:100%;
+}
+.state-line-chart-data th,.state-line-chart-data td {
+  border-bottom:1px solid var(--line);
+  padding:8px 10px;
+}
+.state-line-chart-data th:first-child {
+  text-align:left;
+}
+.state-line-chart-data thead th {
+  color:var(--muted);
+  font-size:12px;
 }
 @media (max-width:640px) {
   .map-floating-badge {

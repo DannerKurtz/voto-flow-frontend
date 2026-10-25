@@ -8,10 +8,11 @@ import { formatPercentage } from '../lib/format';
 import type { PresidentialComparison } from '../lib/comparison';
 import { stateAppearance } from '../lib/map-appearance';
 import { candidateTheme, mapTheme } from '../lib/theme';
+import { StateVoteLineChart } from './map/state-vote-line-chart';
 
 export function BrazilMap({ comparisons }: { comparisons: Record<string, PresidentialComparison> }) {
   const [activeState, setActiveState] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'leadership' | 'dispute'>('dispute');
+  const [viewMode, setViewMode] = useState<'leadership' | 'dispute' | 'chart'>('dispute');
   const activeAppearance = activeState ? stateAppearance(comparisons[activeState], stateNames[activeState]) : null;
 
   const states = useMemo(() => buildMapStates(comparisons), [comparisons]);
@@ -22,14 +23,15 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
 
   return <section className="map-panel" aria-labelledby="map-title">
     <div className="map-heading">
-      <div><p className="eyebrow">Por unidade federativa</p><h2 id="map-title">Mapa eleitoral</h2></div>
-      <div className="map-view-toggle" role="group" aria-label="Modo de visualização do mapa">
+      <div><p className="eyebrow">Por unidade federativa</p><h2 id="map-title">{viewMode === 'chart' ? 'Gráfico por estado' : 'Mapa eleitoral'}</h2></div>
+      <div className="map-view-toggle" role="group" aria-label="Modo de visualização dos resultados por estado">
         <button type="button" className={viewMode === 'leadership' ? 'is-active' : ''} aria-pressed={viewMode === 'leadership'} onClick={() => setViewMode('leadership')}>Liderança</button>
         <button type="button" className={viewMode === 'dispute' ? 'is-active' : ''} aria-pressed={viewMode === 'dispute'} onClick={() => setViewMode('dispute')}>Disputa</button>
+        <button type="button" className={viewMode === 'chart' ? 'is-active' : ''} aria-pressed={viewMode === 'chart'} onClick={() => setViewMode('chart')}>Gráfico</button>
       </div>
     </div>
 
-    <div className="map-canvas">
+    {viewMode === 'chart' ? <StateVoteLineChart comparisons={comparisons} /> : <div className="map-canvas">
       <div className="map-graphic">
       <MapGeography states={states} viewMode={viewMode} badgePlacements={badgePlacements} onActiveStateChange={setActiveState} />
 
@@ -79,14 +81,14 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
           ? `${stateNames[activeState]}: ${activeAppearance.label.replace(`${stateNames[activeState]}: `, '')}`
           : 'Passe o mouse, toque ou navegue pelo teclado sobre uma UF para ver o resumo da apuração.'}</span>
       </div>
-    </div>
+    </div>}
 
-    <div className="map-legend" aria-label="Legenda do mapa">
+    {viewMode !== 'chart' && <div className="map-legend" aria-label="Legenda do mapa">
       <span><i className="legend-blue" />{candidateTheme.flavio.name}</span>
       <span><i className="legend-red" />{candidateTheme.lula.name}</span>
       {viewMode === 'dispute' && <span><i className="legend-swing" />Faixa hachurada: zona em disputa</span>}
       <span><i className="legend-neutral" />Apurando</span>
-    </div>
+    </div>}
     {viewMode === 'dispute' && <p className="map-caption">Proporção territorial de votos e faixa hachurada de competitividade nos estados em disputa. <strong>{disputedCount} estados</strong> dentro da margem de até {mapTheme.swingMarginPercentagePoints} pontos percentuais.</p>}
   </section>;
 }
