@@ -29,7 +29,7 @@ export function stateAppearance(comparison: PresidentialComparison | undefined, 
   if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
   const flavio = candidateFor(comparison.secondRound, 'flavio');
   const lula = candidateFor(comparison.secondRound, 'lula');
-  if (!flavio || !lula) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
+  if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente`, shares: null };
   const leader = flavio.percentage > lula.percentage ? 'flavio' : 'lula';
   const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
   return {
