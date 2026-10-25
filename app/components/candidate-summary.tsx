@@ -1,0 +1,22 @@
+'use client';
+
+import { useState } from 'react';
+import { candidateFor, estimatedVotes, type CandidateKey, type PresidentialComparison } from '../lib/comparison';
+import { candidateTheme } from '../lib/theme';
+
+function formatVotes(value: number | null | undefined): string { return typeof value === 'number' ? value.toLocaleString('pt-BR') : '—'; }
+
+export function CandidateSummary({ candidateKey, comparison }: { candidateKey: CandidateKey; comparison: PresidentialComparison | null }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const theme = candidateTheme[candidateKey];
+  const secondRound = candidateFor(comparison?.secondRound ?? null, candidateKey);
+  const firstRound = candidateFor(comparison?.firstRound ?? null, candidateKey);
+  const surplus = estimatedVotes(comparison, candidateKey);
+  return <article className={`candidate-summary candidate-${candidateKey}`}>
+    <div className="candidate-photo" aria-label={theme.alt}>{imageFailed ? <span aria-hidden="true">{theme.initials}</span> : <img src={theme.imagePath} alt={theme.alt} onError={() => setImageFailed(true)} />}</div>
+    <p className="candidate-label">Segundo turno</p><h2>{secondRound?.name ?? theme.name}</h2>
+    <strong className="candidate-percentage">{secondRound ? `${secondRound.percentage.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%` : '—'}</strong>
+    <p className="candidate-votes">{formatVotes(secondRound?.votes)} votos</p>
+    <dl className="candidate-comparison"><div><dt>1º turno</dt><dd>{formatVotes(firstRound?.votes)} <small>({firstRound ? `${firstRound.percentage.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%` : '—'})</small></dd></div><div><dt>Excedente</dt><dd>{surplus === null ? 'Indisponível' : formatVotes(surplus)}{surplus !== null && <small> estimativa</small>}</dd></div></dl>
+  </article>;
+}
