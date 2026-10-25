@@ -18,18 +18,24 @@ export function apiBaseUrl(): string { const configured = process.env.NEXT_PUBLI
 export function websocketUrl(): string { return `${apiBaseUrl().replace(/^http/, 'ws')}/ws`; }
 export function candidateFor(round: RoundResult | SecondRoundResult | null, key: CandidateKey): CandidateResult | null { return round?.candidates.find((candidate) => candidate.key === key) ?? null; }
 export function estimatedVotes(comparison: PresidentialComparison | null, key: CandidateKey): number | null { return comparison?.estimatedSurplus.eligible ? comparison.estimatedSurplus.candidates.find((candidate) => candidate.key === key)?.votes ?? null : null; }
-export type MapStateAppearance = { fill: string; leader: CandidateKey | null; label: string };
+export type MapStateAppearance = {
+  fill: string;
+  leader: CandidateKey | null;
+  label: string;
+  shares: { flavio: number; lula: number } | null;
+};
 
 export function stateAppearance(comparison: PresidentialComparison | undefined, stateName: string): MapStateAppearance {
-  if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando` };
+  if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
   const flavio = candidateFor(comparison.secondRound, 'flavio');
   const lula = candidateFor(comparison.secondRound, 'lula');
-  if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente` };
+  if (!flavio || !lula) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
   const leader = flavio.percentage > lula.percentage ? 'flavio' : 'lula';
-  const leadingPercentage = leader === 'flavio' ? flavio.percentage : lula.percentage;
-  const intensity = Math.min(1, Math.max(0, (leadingPercentage - 50) / (mapTheme.maxIntensityPercentage - 50)));
-  const [red, green, blue] = candidateTheme[leader].rgb;
-  const neutral = [229, 234, 241];
-  const mix = (channel: number, neutralChannel: number) => Math.round(neutralChannel + (channel - neutralChannel) * intensity);
-  return { fill: `rgb(${mix(red, neutral[0])} ${mix(green, neutral[1])} ${mix(blue, neutral[2])})`, leader, label: `${stateName}: ${candidateTheme[leader].name} lidera com ${leadingPercentage.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%` };
+  const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  return {
+    fill: mapTheme.neutral,
+    leader,
+    label: `${stateName}: ${candidateTheme.flavio.name} ${formatPercentage(flavio.percentage)}%, ${candidateTheme.lula.name} ${formatPercentage(lula.percentage)}%`,
+    shares: { flavio: flavio.percentage, lula: lula.percentage },
+  };
 }
