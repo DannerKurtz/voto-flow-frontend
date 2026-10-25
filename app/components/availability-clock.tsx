@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const target = new Date(process.env.NEXT_PUBLIC_RESULTS_START_AT ?? '2026-10-04T17:00:00-03:00').getTime();
+const target = new Date(process.env.NEXT_PUBLIC_RESULTS_START_AT ?? '2026-10-25T17:00:00-03:00').getTime();
 const format = (milliseconds: number) => {
   const seconds = Math.floor(milliseconds / 1_000);
   return [Math.floor(seconds / 3_600), Math.floor(seconds % 3_600 / 60), seconds % 60]
