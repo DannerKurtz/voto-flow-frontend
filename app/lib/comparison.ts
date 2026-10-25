@@ -36,6 +36,9 @@ export function stateAppearance(comparison: PresidentialComparison | undefined, 
     fill: candidateTheme[leader].color,
     leader,
     label: `${stateName}: ${candidateTheme.flavio.name} ${formatPercentage(flavio.percentage)}%, ${candidateTheme.lula.name} ${formatPercentage(lula.percentage)}%`,
-    shares: { flavio: flavio.percentage, lula: lula.percentage },
+    shares: {
+      flavio: Math.min(100, Math.max(0, flavio.percentage)),
+      lula: Math.min(100, Math.max(0, lula.percentage)),
+    },
   };
 }
