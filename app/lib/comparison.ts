@@ -22,20 +22,22 @@ export type MapStateAppearance = {
   fill: string;
   leader: CandidateKey | null;
   label: string;
-  shares: { flavio: number; lula: number } | null;
 };
 
 export function stateAppearance(comparison: PresidentialComparison | undefined, stateName: string): MapStateAppearance {
-  if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
+  if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando` };
   const flavio = candidateFor(comparison.secondRound, 'flavio');
   const lula = candidateFor(comparison.secondRound, 'lula');
-  if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente`, shares: null };
+  if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente` };
   const leader = flavio.percentage > lula.percentage ? 'flavio' : 'lula';
+  const [red, green, blue] = candidateTheme[leader].rgb;
+  const neutral = [229, 234, 241];
+  const intensity = Math.min(1, Math.abs(flavio.percentage - lula.percentage) / mapTheme.maximumHeatMarginPoints);
+  const mix = (channel: number, neutralChannel: number) => Math.round(neutralChannel + (channel - neutralChannel) * intensity);
   const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
   return {
-    fill: mapTheme.neutral,
+    fill: `rgb(${mix(red, neutral[0])} ${mix(green, neutral[1])} ${mix(blue, neutral[2])})`,
     leader,
     label: `${stateName}: ${candidateTheme.flavio.name} ${formatPercentage(flavio.percentage)}%, ${candidateTheme.lula.name} ${formatPercentage(lula.percentage)}%`,
-    shares: { flavio: flavio.percentage, lula: lula.percentage },
   };
 }
