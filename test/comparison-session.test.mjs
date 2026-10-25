@@ -13,6 +13,13 @@ function comparison(votes = 10, scope = 'sp') {
     estimatedSurplus: { estimated: true, eligible: false, label: 'estimativa', candidates: [] },
   };
 }
+function pendingComparison(scope = 'sp') {
+  return {
+    scope: { code: scope, level: scope === 'br' ? 'national' : 'state' }, availability: 'pending',
+    firstRound: null, secondRound: null,
+    estimatedSurplus: { estimated: true, eligible: false, label: 'estimativa', candidates: [] },
+  };
+}
 class Socket {
   onopen = null; onclose = null; onerror = null; onmessage = null;
   sent = []; closed = false;
@@ -87,6 +94,23 @@ test('reloads the current state after reconnection and keeps one active subscrip
     assert.equal(sockets[1].sent.length, 1);
     assert.equal(state.comparisons.sp.secondRound.candidates[0].votes, 3);
     assert.equal(state.status, 'connected');
+  } finally { stop(); }
+});
+
+test('keeps the last ready result when REST or WebSocket reports a pending result', async () => {
+  const socket = new Socket(); let requests = 0; let state;
+  const stop = startComparisonSession({
+    load: async () => ++requests === 1 ? [comparison(42)] : [pendingComparison()],
+    createSocket: () => socket, onChange: (next) => { state = next; },
+  });
+  try {
+    await tick();
+    socket.open(); await tick();
+    socket.acknowledge(); await tick();
+    assert.equal(state.comparisons.sp.availability, 'ready');
+    socket.message({ type: 'second-round.comparison.updated', data: { scopeCode: 'sp', comparison: pendingComparison() } });
+    assert.equal(state.comparisons.sp.availability, 'ready');
+    assert.equal(state.comparisons.sp.secondRound.candidates[0].votes, 42);
   } finally { stop(); }
 });
 

@@ -10,6 +10,9 @@ const governor = (votes, scope = 'ac') => ({
     candidates: [{ sqcand: 'a', name: 'A', ballotName: 'A', votes, percentage: 55 }],
   },
 });
+const pendingGovernor = (scope = 'ac') => ({
+  scope: { code: scope, level: 'state' }, availability: 'pending', secondRound: null,
+});
 class Socket {
   onopen = null; onclose = null; onerror = null; onmessage = null;
   sent = []; closed = false;
@@ -50,4 +53,22 @@ test('aborts the initial request and closes the socket on cleanup', async () => 
   socket.open(); stop(); initial.resolve([governor(10)]); await tick();
   assert.equal(signal.aborted, true);
   assert.equal(socket.closed, true);
+});
+
+test('keeps the last ready governor result when REST or WebSocket reports pending', async () => {
+  const socket = new Socket(); let requests = 0; let state;
+  const stop = startGovernorSession({
+    load: async () => ++requests === 1 ? [governor(42)] : [pendingGovernor()],
+    createSocket: () => socket, onChange: (next) => { state = next; },
+  });
+  try {
+    await tick();
+    socket.open(); await tick();
+    socket.message({ type: 'subscribed', data: { subscription: 'second-round-governor', scopeCode: 'ac' } });
+    await tick();
+    assert.equal(state.results.ac.availability, 'ready');
+    socket.message({ type: 'second-round.governor.updated', data: { scopeCode: 'ac', result: pendingGovernor() } });
+    assert.equal(state.results.ac.availability, 'ready');
+    assert.equal(state.results.ac.secondRound.candidates[0].votes, 42);
+  } finally { stop(); }
 });

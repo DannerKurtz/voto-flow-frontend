@@ -32,6 +32,8 @@ export function startGovernorSession(dependencies: Dependencies): () => void {
       if (stopped) return [];
       const next = { ...state.results };
       for (const result of results) {
+        // A temporary pending response must not erase the last official result already displayed.
+        if (result.availability === 'pending' && next[result.scope.code]?.availability === 'ready') continue;
         if ((revisions.get(result.scope.code) ?? 0) === (atStart.get(result.scope.code) ?? 0)) next[result.scope.code] = result;
       }
       emit({ results: next, error: null });
@@ -67,6 +69,7 @@ export function startGovernorSession(dependencies: Dependencies): () => void {
       const result = parseGovernorUpdate(event.data);
       if (result) {
         const code = result.scope.code;
+        if (result.availability === 'pending' && state.results[code]?.availability === 'ready') return;
         revisions.set(code, (revisions.get(code) ?? 0) + 1);
         emit({ results: { ...state.results, [code]: result } });
         return;

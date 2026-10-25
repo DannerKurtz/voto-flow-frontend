@@ -42,6 +42,8 @@ export function startComparisonSession(dependencies: SessionDependencies): () =>
       const comparisons = { ...state.comparisons };
       for (const comparison of results) {
         const code = comparison.scope.code;
+        // A temporary pending response must not erase the last official result already displayed.
+        if (comparison.availability === 'pending' && comparisons[code]?.availability === 'ready') continue;
         // A newer WS update takes precedence over an older in-flight HTTP snapshot.
         if ((revisions.get(code) ?? 0) === (atStart.get(code) ?? 0)) comparisons[code] = comparison;
       }
@@ -82,6 +84,7 @@ export function startComparisonSession(dependencies: SessionDependencies): () =>
       const comparison = parseComparisonUpdate(event.data);
       if (comparison) {
         const code = comparison.scope.code;
+        if (comparison.availability === 'pending' && state.comparisons[code]?.availability === 'ready') return;
         revisions.set(code, (revisions.get(code) ?? 0) + 1);
         emit({ comparisons: { ...state.comparisons, [code]: comparison } });
         return;
