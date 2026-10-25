@@ -1,6 +1,4 @@
-import { candidateTheme, mapTheme } from './theme';
-
-export type CandidateKey = keyof typeof candidateTheme;
+export type CandidateKey = 'flavio' | 'lula';
 export type CandidateResult = { key: CandidateKey; sqcand: string; name: string; ballotName: string; votes: number; percentage: number };
 export type RoundResult = { electionCode: string; totalizationPercentage: number; candidates: CandidateResult[] };
 export type SecondRoundResult = RoundResult & { blankVotes: number; nullVotes: number };
@@ -13,32 +11,5 @@ export type PresidentialComparison = {
 };
 export type ComparisonList = { results: PresidentialComparison[] };
 
-const fallbackApi = 'https://voto-flow-backend.onrender.com';
-export function apiBaseUrl(): string { const configured = process.env.NEXT_PUBLIC_API_URL; return configured?.startsWith('http://') || configured?.startsWith('https://') ? configured : fallbackApi; }
-export function websocketUrl(): string { return `${apiBaseUrl().replace(/^http/, 'ws')}/ws`; }
 export function candidateFor(round: RoundResult | SecondRoundResult | null, key: CandidateKey): CandidateResult | null { return round?.candidates.find((candidate) => candidate.key === key) ?? null; }
 export function estimatedVotes(comparison: PresidentialComparison | null, key: CandidateKey): number | null { return comparison?.estimatedSurplus.eligible ? comparison.estimatedSurplus.candidates.find((candidate) => candidate.key === key)?.votes ?? null : null; }
-export type MapStateAppearance = {
-  fill: string;
-  leader: CandidateKey | null;
-  label: string;
-  shares: { flavio: number; lula: number } | null;
-};
-
-export function stateAppearance(comparison: PresidentialComparison | undefined, stateName: string): MapStateAppearance {
-  if (!comparison || comparison.availability !== 'ready' || !comparison.secondRound) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: apurando`, shares: null };
-  const flavio = candidateFor(comparison.secondRound, 'flavio');
-  const lula = candidateFor(comparison.secondRound, 'lula');
-  if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente`, shares: null };
-  const leader = flavio.percentage > lula.percentage ? 'flavio' : 'lula';
-  const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
-  return {
-    fill: candidateTheme[leader].color,
-    leader,
-    label: `${stateName}: ${candidateTheme.flavio.name} ${formatPercentage(flavio.percentage)}%, ${candidateTheme.lula.name} ${formatPercentage(lula.percentage)}%`,
-    shares: {
-      flavio: Math.min(100, Math.max(0, flavio.percentage)),
-      lula: Math.min(100, Math.max(0, lula.percentage)),
-    },
-  };
-}

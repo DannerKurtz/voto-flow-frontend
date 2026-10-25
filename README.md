@@ -31,6 +31,23 @@ Os avatares em `public/candidates/` são neutros. Antes de publicar, substitua-o
 ## Verificação
 
 ```bash
-pnpm exec tsc --noEmit
+pnpm typecheck
+pnpm test
 pnpm build
 ```
+
+## Organização e responsabilidades
+
+- `app/lib/comparison.ts`: contrato de dados e seletores dos candidatos.
+- `app/lib/realtime/comparison-client.ts`: HTTP e validação da resposta.
+- `app/lib/realtime/comparison-session.ts`: ciclo da conexão, inscrições, reconexão e conciliação REST/WebSocket, independente do React.
+- `app/lib/use-presidential-comparisons.ts`: adaptação da sessão para o estado React e limpeza ao desmontar.
+- `app/components/map/geometry.ts`: geometria estática calculada uma vez.
+- `app/components/map/model.ts`: aparência e posicionamento dos crachás, recalculados quando os dados mudam.
+- `app/components/map/geography.tsx`: SVG memoizado; passar o mouse atualiza o tooltip sem reconstruir os paths.
+- `app/lib/theme.ts`: cores compartilhadas pelo SVG e pelo CSS através do layout.
+- `app/lib/format.ts`: formatação numérica reutilizada pela interface.
+
+As dependências de transporte da sessão são injetadas nos testes. Há uma única busca REST em andamento; depois da confirmação das inscrições, uma nova leitura recupera mudanças ocorridas durante a conexão. Uma mensagem WebSocket recebida durante essa leitura prevalece sobre a resposta HTTP antiga. Mensagens inválidas são descartadas antes de alterar a tela.
+
+Os testes usam o executor nativo do Node e dados locais, sem consultas ao TSE ou ao Google. Execute com a versão de Node suportada pelo projeto (22) e pnpm 10.26.2.

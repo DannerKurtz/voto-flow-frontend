@@ -13,8 +13,8 @@ The project progresses only through explicitly authorized phases. Do not start a
 Current status:
 
 - Phase 1 — Official TSE research: completed.
-- Next authorized analysis phase: Phase 2 — Electoral Domain.
-- Frontend implementation remains unauthorized until Phase 10 receives explicit approval.
+- Frontend implementation and the second-round dashboard are authorized by the project owner.
+- Preserve the approved map design and existing REST/WebSocket contracts during refactoring.
 
 ## Technology Direction
 
