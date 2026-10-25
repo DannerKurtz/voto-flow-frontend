@@ -25,17 +25,17 @@ export function StateVoteLineChart({ comparisons }: { comparisons: Record<string
             <text x={stateVoteChart.left - 10} y={y + 4} textAnchor="end">{tick}%</text>
           </g>;
         })}
-        <path className="line-chart-series line-chart-flavio" d={flavioLine} />
-        <path className="line-chart-series line-chart-lula" d={lulaLine} />
+        <path className="line-chart-series line-chart-flavio" d={flavioLine} pathLength={1} />
+        <path className="line-chart-series line-chart-lula" d={lulaLine} pathLength={1} />
         {points.map((point, index) => {
           const x = stateVoteChart.left + (index / (points.length - 1)) * plotWidth;
           const labelY = stateVoteChart.top + plotHeight + 26;
           return <g key={point.code}>
             <text className="line-chart-state-label" x={x} y={labelY} textAnchor="middle">{point.code.toUpperCase()}</text>
-            {point.flavio !== null && <circle className="line-chart-point line-chart-point-flavio" cx={x} cy={stateVoteChart.top + ((100 - point.flavio) / 100) * plotHeight} r="4">
+            {point.flavio !== null && <circle className="line-chart-point line-chart-point-flavio" cx={x} cy={stateVoteChart.top + ((100 - point.flavio) / 100) * plotHeight} r="4" style={{ animationDelay: `${250 + index * 12}ms` }}>
               <title>{`${point.name}: ${candidateTheme.flavio.name} ${formatPercentage(point.flavio, true)}`}</title>
             </circle>}
-            {point.lula !== null && <circle className="line-chart-point line-chart-point-lula" cx={x} cy={stateVoteChart.top + ((100 - point.lula) / 100) * plotHeight} r="4">
+            {point.lula !== null && <circle className="line-chart-point line-chart-point-lula" cx={x} cy={stateVoteChart.top + ((100 - point.lula) / 100) * plotHeight} r="4" style={{ animationDelay: `${350 + index * 12}ms` }}>
               <title>{`${point.name}: ${candidateTheme.lula.name} ${formatPercentage(point.lula, true)}`}</title>
             </circle>}
           </g>;

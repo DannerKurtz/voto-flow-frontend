@@ -53,7 +53,7 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
     </div>
 
     {viewMode === 'chart' ? <StateVoteLineChart comparisons={comparisons} /> : <div className="map-canvas">
-      <div className="map-graphic">
+      <div className={`map-graphic map-mode-${viewMode}`}>
       <MapGeography states={states} viewMode={viewMode} badgePlacements={badgePlacements} onActiveStateChange={setActiveState} />
 
       {viewMode === 'dispute' && badgePlacements.filter(({ state }) => state.code !== activeState).map(({ state, x, y }) => {

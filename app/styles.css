@@ -337,6 +337,7 @@ button,input,select {
   font-size:12px;
   font-weight:800;
   padding:8px 10px;
+  transition:background-color .22s ease,color .22s ease;
 }
 .map-view-toggle button + button {
   border-left:1px solid var(--line);
@@ -694,6 +695,7 @@ button,input,select {
 }
 @media (prefers-reduced-motion:reduce) {
   *,*::before,*::after {
+    animation:none !important;
     scroll-behavior:auto !important;
     transition:none !important;
   }
@@ -720,13 +722,29 @@ button,input,select {
 }
 .state-base {
   stroke-width:2;
-  transition:filter .16s ease,stroke-width .16s ease;
+  transition:fill .42s ease,filter .2s ease,stroke-width .16s ease;
   vector-effect:non-scaling-stroke;
 }
 .state-region:hover .state-base,.state-region:focus-visible .state-base {
   filter:brightness(1.12);
   stroke:#fff;
   stroke-width:3.5;
+}
+.map-mode-leadership .state-region[data-leader="flavio"] .state-base {
+  animation:leadership-flavio-on .8s cubic-bezier(.2,.8,.2,1) both;
+}
+.map-mode-leadership .state-region[data-leader="lula"] .state-base {
+  animation:leadership-lula-on .8s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes leadership-flavio-on {
+  0% { filter:brightness(.72) drop-shadow(0 0 0 var(--blue)); }
+  55% { filter:brightness(1.28) drop-shadow(0 0 8px var(--blue)); }
+  100% { filter:brightness(1.04) drop-shadow(0 0 2px var(--blue)); }
+}
+@keyframes leadership-lula-on {
+  0% { filter:brightness(.72) drop-shadow(0 0 0 var(--red)); }
+  55% { filter:brightness(1.28) drop-shadow(0 0 8px var(--red)); }
+  100% { filter:brightness(1.04) drop-shadow(0 0 2px var(--red)); }
 }
 .state-abbreviation {
   dominant-baseline:middle;
@@ -833,6 +851,24 @@ button,input,select {
   background:var(--red);
   border-radius:0 99px 99px 0;
 }
+.map-mode-dispute .map-badge-bar .map-badge-blue {
+  animation:tug-blue-in .68s cubic-bezier(.18,.78,.28,1) both;
+  transform-origin:left center;
+}
+.map-mode-dispute .map-badge-bar .map-badge-red {
+  animation:tug-red-in .68s cubic-bezier(.18,.78,.28,1) both;
+  transform-origin:right center;
+}
+@keyframes tug-blue-in {
+  0% { transform:scaleX(.08); }
+  70% { transform:scaleX(1.1); }
+  100% { transform:scaleX(1); }
+}
+@keyframes tug-red-in {
+  0% { transform:scaleX(.08); }
+  70% { transform:scaleX(1.1); }
+  100% { transform:scaleX(1); }
+}
 .map-badge-bar i {
   background:var(--surface);
   border:2px solid var(--map-marker);
@@ -869,6 +905,11 @@ button,input,select {
 .state-line-chart {
   margin:20px auto 4px;
   max-width:760px;
+  animation:chart-panel-rise .48s cubic-bezier(.2,.75,.25,1) both;
+}
+@keyframes chart-panel-rise {
+  from { opacity:0; transform:translateY(18px); }
+  to { opacity:1; transform:translateY(0); }
 }
 .state-line-chart-scroll {
   overflow-x:auto;
@@ -895,6 +936,9 @@ button,input,select {
   stroke-width:1.5;
 }
 .line-chart-series {
+  animation:chart-line-draw .9s cubic-bezier(.2,.7,.2,1) both;
+  stroke-dasharray:1;
+  stroke-dashoffset:0;
   fill:none;
   stroke-linecap:round;
   stroke-linejoin:round;
@@ -906,11 +950,23 @@ button,input,select {
 }
 .line-chart-lula {
   stroke:var(--red);
+  animation-delay:.14s;
+}
+@keyframes chart-line-draw {
+  from { stroke-dashoffset:1; }
+  to { stroke-dashoffset:0; }
 }
 .line-chart-point {
+  animation:chart-point-rise .38s cubic-bezier(.18,.75,.25,1) both;
   stroke:var(--surface);
   stroke-width:2;
+  transform-box:fill-box;
+  transform-origin:center;
   vector-effect:non-scaling-stroke;
+}
+@keyframes chart-point-rise {
+  from { opacity:0; transform:scale(.35) translateY(8px); }
+  to { opacity:1; transform:scale(1) translateY(0); }
 }
 .line-chart-point-flavio {
   fill:var(--blue);

@@ -37,7 +37,7 @@ export const MapGeography = memo(function MapGeography({ states, viewMode, badge
           })}
         </defs>
 
-        {states.map((shape) => {
+        {states.map((shape, index) => {
           const { appearance, closeMargin, hatchWidth } = shape;
           const title = appearance.label;
 
@@ -47,6 +47,7 @@ export const MapGeography = memo(function MapGeography({ states, viewMode, badge
             tabIndex={0}
             role="img"
             aria-label={title}
+            data-leader={appearance.leader ?? 'none'}
             onPointerEnter={() => onActiveStateChange(shape.code)}
             onPointerLeave={() => onActiveStateChange(null)}
             onFocus={() => onActiveStateChange(shape.code)}
@@ -55,6 +56,7 @@ export const MapGeography = memo(function MapGeography({ states, viewMode, badge
             <path
               d={shape.path}
               className="state-base"
+              style={{ animationDelay: `${index * 12}ms` }}
               fill={viewMode === 'dispute' && appearance.shares ? `url(#state-gradient-${shape.code})` : appearance.fill}
               stroke={mapTheme.neutralStroke}
             />
