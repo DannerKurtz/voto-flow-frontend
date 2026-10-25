@@ -6,5 +6,4 @@ export const candidateTheme = {
 export const mapTheme = {
   neutral: '#e5eaf1',
   neutralStroke: '#aab7c8',
-  maximumHeatMarginPoints: 20,
 } as const;
