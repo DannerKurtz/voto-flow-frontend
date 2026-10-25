@@ -5,6 +5,7 @@ import { AvailabilityClock } from './components/availability-clock';
 import { BrazilMap } from './components/brazil-map';
 import { CandidateSummary } from './components/candidate-summary';
 import { usePresidentialComparisons } from './lib/use-presidential-comparisons';
+import { GovernorRunoffs } from './components/governor-runoffs';
 
 const statusLabels = {
   loading: 'Carregando dados oficiais',
@@ -43,6 +44,7 @@ export default function Page() {
       <article><span>Votos nulos</span><strong>{formatVotes(secondRound?.nullVotes)}</strong><small>Dado oficial do segundo turno</small></article>
       <article><span>Estimativa</span><strong>{national?.estimatedSurplus.eligible ? 'Disponível' : 'Aguardando base'}</strong><small>Não é um dado oficial do TSE</small></article>
     </section>
+    <GovernorRunoffs />
     <footer className="source-note">A estimativa de excedente só é exibida após os dois candidatos alcançarem sua base do primeiro turno em cada abrangência. Nulos e brancos permanecem separados como dados oficiais.</footer>
   </main>;
 }

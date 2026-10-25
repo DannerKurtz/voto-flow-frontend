@@ -19,8 +19,12 @@ pnpm dev
 
 - `GET /results/second-round/president`
 - `second-round.comparison.updated` no WebSocket `/ws`
+- `GET /results/second-round/governors`
+- `second-round.governor.updated` no WebSocket `/ws`
 
 O painel apresenta votos, percentuais, apuração, brancos e nulos oficiais. O excedente é sempre identificado como estimativa e só aparece quando a API o disponibiliza.
+
+Ao final da página há um bloco compacto para as disputas estaduais de governador. Ele exibe candidatos, votos, percentuais e totalização enviados pelo backend e recebe mudanças pelo WebSocket. O recurso depende de `GOVERNOR_SECOND_ROUND_TARGETS` no backend e dos alvos EA20 correspondentes em `TSE_POLL_TARGETS`; sem essa configuração, a seção informa que os dados ainda não estão disponíveis.
 
 ## Mapa e fotos
 
@@ -42,6 +46,8 @@ pnpm build
 - `app/lib/realtime/comparison-client.ts`: HTTP e validação da resposta.
 - `app/lib/realtime/comparison-session.ts`: ciclo da conexão, inscrições, reconexão e conciliação REST/WebSocket, independente do React.
 - `app/lib/use-presidential-comparisons.ts`: adaptação da sessão para o estado React e limpeza ao desmontar.
+- `app/lib/governors.ts` and `app/lib/realtime/governor-*`: contract validation and scoped live session for the state governor bonus.
+- `app/components/governor-runoffs.tsx`: compact state cards rendered after the presidential results.
 - `app/components/map/geometry.ts`: geometria estática calculada uma vez.
 - `app/components/map/model.ts`: aparência e posicionamento dos crachás, recalculados quando os dados mudam.
 - `app/components/map/geography.tsx`: SVG memoizado; passar o mouse atualiza o tooltip sem reconstruir os paths.

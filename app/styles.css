@@ -335,6 +335,85 @@ button,input,select {
   margin-top:30px;
   padding-top:19px;
 }
+.governor-runoffs {
+  border-top:1px solid var(--line);
+  margin-top:42px;
+  padding-top:27px;
+}
+.governor-runoffs-heading {
+  align-items:flex-end;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+}
+.governor-runoffs-heading .eyebrow { margin-bottom:7px; }
+.governor-runoffs-heading h2 {
+  font-size:26px;
+  letter-spacing:-.04em;
+  margin:0;
+}
+.governor-runoff-grid {
+  display:grid;
+  gap:12px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.governor-runoff-card {
+  background:var(--wash);
+  border:1px solid var(--line);
+  border-radius:11px;
+  min-width:0;
+  padding:15px;
+}
+.governor-runoff-card-heading {
+  align-items:baseline;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:12px;
+}
+.governor-runoff-card-heading h3 {
+  font-size:16px;
+  margin:0;
+}
+.governor-runoff-card-heading span,.governor-runoff-pending,.governor-runoff-footnote {
+  color:var(--muted);
+  font-size:12px;
+}
+.governor-runoff-candidates {
+  display:grid;
+  gap:8px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.governor-runoff-candidate {
+  display:grid;
+  gap:3px;
+  min-width:0;
+}
+.governor-runoff-candidate-name {
+  align-items:flex-start;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:12px;
+}
+.governor-runoff-candidate-name small { color:var(--muted); font-size:10px; }
+.governor-runoff-candidate strong { font-size:19px; }
+.governor-runoff-candidate small { color:var(--muted); font-size:11px; }
+.governor-runoff-vote-bar {
+  background:#e5eaf1;
+  border-radius:5px;
+  display:flex;
+  height:7px;
+  margin-top:12px;
+  overflow:hidden;
+}
+.governor-runoff-vote-bar i { display:block; height:100%; }
+.governor-runoff-pending { margin:0; }
+.governor-runoff-notice { color:var(--muted); font-size:13px; margin:0 0 12px; }
+.governor-runoff-footnote { margin:12px 0 0; }
 @media (max-width:980px) {
   .candidate-map-layout {
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -352,11 +431,15 @@ button,input,select {
   .official-summary {
     grid-template-columns:repeat(2,1fr);
   }
+  .governor-runoff-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (max-width:640px) {
   .second-round-page {
     padding:0 18px 34px;
   }
+  .governor-runoffs-heading { align-items:flex-start; flex-direction:column; }
+  .governor-runoffs-heading h2 { font-size:22px; }
+  .governor-runoff-grid { grid-template-columns:1fr; }
   .site-header {
     height:64px;
   }
