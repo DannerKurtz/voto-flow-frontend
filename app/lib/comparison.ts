@@ -27,7 +27,8 @@ export function stateAppearance(comparison: PresidentialComparison | undefined, 
   if (!flavio || !lula || flavio.percentage === lula.percentage) return { fill: mapTheme.neutral, leader: null, label: `${stateName}: empate ou apuração pendente` };
   const leader = flavio.percentage > lula.percentage ? 'flavio' : 'lula';
   const leadingPercentage = leader === 'flavio' ? flavio.percentage : lula.percentage;
-  const intensity = Math.min(1, Math.max(0, (leadingPercentage - 50) / (mapTheme.maxIntensityPercentage - 50)));
+  const marginProgress = Math.min(1, Math.max(0, (leadingPercentage - 50) / (mapTheme.maxIntensityPercentage - 50)));
+  const intensity = mapTheme.minimumColorStrength + (1 - mapTheme.minimumColorStrength) * marginProgress;
   const [red, green, blue] = candidateTheme[leader].rgb;
   const neutral = [229, 234, 241];
   const mix = (channel: number, neutralChannel: number) => Math.round(neutralChannel + (channel - neutralChannel) * intensity);
