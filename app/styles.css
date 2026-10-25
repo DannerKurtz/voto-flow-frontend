@@ -874,7 +874,6 @@ button,input,select {
   border:2px solid var(--map-marker);
   border-radius:50%;
   height:14px;
-  left:50%;
   position:absolute;
   top:50%;
   transform:translate(-50%,-50%);

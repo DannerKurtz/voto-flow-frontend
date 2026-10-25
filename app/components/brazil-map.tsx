@@ -69,7 +69,7 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
           <div className="map-badge-bar" role="img" aria-label={`Flávio ${formatPercentage(state.flavio, true)}, Lula ${formatPercentage(state.lula, true)}`}>
             <span className="map-badge-blue" style={{ width: `${state.flavio}%` }} />
             <span className="map-badge-red" style={{ width: `${state.lula}%` }} />
-            <i aria-hidden="true" />
+            <i aria-hidden="true" style={{ left: `${state.flavio}%` }} />
           </div>
         </div>;
       })}
@@ -90,7 +90,7 @@ export function BrazilMap({ comparisons }: { comparisons: Record<string, Preside
             <div className="map-badge-bar" role="img" aria-label={`Flávio ${formatPercentage(activeAppearance.shares.flavio, true)}, Lula ${formatPercentage(activeAppearance.shares.lula, true)}`}>
               <span className="map-badge-blue" style={{ width: `${activeAppearance.shares.flavio}%` }} />
               <span className="map-badge-red" style={{ width: `${activeAppearance.shares.lula}%` }} />
-              <i aria-hidden="true" />
+              <i aria-hidden="true" style={{ left: `${activeAppearance.shares.flavio}%` }} />
             </div>
           </>
           : <p className="map-hover-pending">Dados ainda não disponíveis</p>}
