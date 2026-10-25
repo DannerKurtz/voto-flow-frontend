@@ -12,6 +12,7 @@ function percentage(value: unknown): value is number {
 function candidate(value: unknown): value is CandidateResult {
   return isRecord(value) && (value.key === 'flavio' || value.key === 'lula')
     && typeof value.sqcand === 'string' && typeof value.name === 'string' && typeof value.ballotName === 'string'
+    && (value.party === undefined || typeof value.party === 'string')
     && nonnegative(value.votes) && percentage(value.percentage);
 }
 function round(value: unknown): value is RoundResult {

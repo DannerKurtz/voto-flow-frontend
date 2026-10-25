@@ -13,6 +13,7 @@ function isGovernorResult(value: unknown): value is GovernorResult {
     && nonnegative(result.blankVotes) && nonnegative(result.nullVotes) && Array.isArray(result.candidates)
     && result.candidates.every((candidate: unknown) => isRecord(candidate) && typeof candidate.sqcand === 'string'
       && typeof candidate.name === 'string' && typeof candidate.ballotName === 'string'
+      && (candidate.party === undefined || typeof candidate.party === 'string')
       && nonnegative(candidate.votes) && nonnegative(candidate.percentage) && candidate.percentage <= 100);
 }
 export function parseGovernorList(payload: unknown): GovernorResult[] {

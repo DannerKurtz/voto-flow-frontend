@@ -22,6 +22,7 @@ export function CandidateSummary({ candidateKey, comparison }: Props) {
     </div>
     <p className="candidate-label">Segundo turno</p>
     <h2>{secondRound?.name ?? theme.name}</h2>
+    {secondRound?.party && <p className="candidate-party">{secondRound.party}</p>}
     <strong className="candidate-percentage">{formatPercentage(secondRound?.percentage)}</strong>
     <p className="candidate-votes">{formatVotes(secondRound?.votes)} votos</p>
     <dl className="candidate-comparison">

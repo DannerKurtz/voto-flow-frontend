@@ -21,6 +21,14 @@ test('validates the governor result list and permits pending scopes', () => {
   assert.throws(() => parseGovernorList({ results: [{ ...result, secondRound: { ...result.secondRound, totalizationPercentage: 105 } }] }));
 });
 
+test('accepts optional official party labels and rejects invalid party types', () => {
+  const withParty = structuredClone(result);
+  withParty.secondRound.candidates[0].party = 'PL';
+  assert.equal(parseGovernorList({ results: [withParty] })[0].secondRound.candidates[0].party, 'PL');
+  withParty.secondRound.candidates[0].party = 22;
+  assert.throws(() => parseGovernorList({ results: [withParty] }));
+});
+
 test('accepts matching governor websocket messages and ignores unrelated or inconsistent frames', () => {
   assert.deepEqual(parseGovernorUpdate(JSON.stringify({ type: 'second-round.governor.updated', data: { scopeCode: 'ac', result } })), result);
   assert.equal(parseGovernorUpdate(JSON.stringify({ type: 'second-round.governor.updated', data: { scopeCode: 'df', result } })), null);

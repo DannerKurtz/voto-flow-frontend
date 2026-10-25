@@ -32,6 +32,7 @@ export function GovernorRunoffs() {
                 {candidates.map((candidate, index) => <div className="governor-runoff-candidate" key={candidate.sqcand}>
                   <span className="governor-runoff-candidate-name" title={candidate.name}>
                     <small>{index === 0 ? '1º lugar' : `${index + 1}º lugar`}</small>{candidate.ballotName}
+                    {candidate.party && <span className="governor-runoff-candidate-party">{candidate.party}</span>}
                   </span>
                   <strong style={{ color: candidateColors[index % candidateColors.length] }}>{formatPercentage(candidate.percentage)}</strong>
                   <small>{formatVotes(candidate.votes)} votos</small>

@@ -1,4 +1,4 @@
-export type GovernorCandidate = { sqcand: string; name: string; ballotName: string; votes: number; percentage: number };
+export type GovernorCandidate = { sqcand: string; name: string; ballotName: string; party?: string; votes: number; percentage: number };
 export type GovernorResult = {
   scope: { code: string; level: 'state' };
   availability: 'pending' | 'ready';

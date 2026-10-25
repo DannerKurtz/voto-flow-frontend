@@ -20,6 +20,15 @@ function pendingComparison(scope = 'sp') {
     estimatedSurplus: { estimated: true, eligible: false, label: 'estimativa', candidates: [] },
   };
 }
+test('preserves optional official presidential parties without accepting invalid types', () => {
+  const result = comparison();
+  assert.doesNotThrow(() => parseComparisonList({ results: [result] }));
+  result.secondRound.candidates[0].party = 'PL';
+  result.secondRound.candidates[1].party = 'PT';
+  assert.equal(parseComparisonList({ results: [result] })[0].secondRound.candidates[1].party, 'PT');
+  result.secondRound.candidates[1].party = 13;
+  assert.throws(() => parseComparisonList({ results: [result] }));
+});
 class Socket {
   onopen = null; onclose = null; onerror = null; onmessage = null;
   sent = []; closed = false;
