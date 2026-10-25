@@ -1,8 +1,8 @@
 # Fotos dos candidatos
 
-Os avatares SVG neutros atuais mantêm o layout estável. Substitua-os por fotos locais e autorizadas antes de publicar, atualizando `app/lib/theme.ts` se a extensão mudar:
+As fotos usadas pelo painel são servidas localmente, sem hotlink:
 
-- `flavio-bolsonaro.jpg`
-- `luiz-inacio-lula-da-silva.jpg`
+- `flavio-bolsonaro.png`
+- `luiz-inacio-lula-da-silva.png`
 
-Mantenha os textos alternativos configurados ao trocar os arquivos.
+Os caminhos e textos alternativos ficam definidos em `app/lib/theme.ts`.

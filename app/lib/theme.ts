@@ -1,6 +1,6 @@
 export const candidateTheme = {
-  flavio: { name: 'Flávio Bolsonaro', color: '#0055ff', initials: 'FB', imagePath: '/candidates/flavio-bolsonaro.svg', alt: 'Avatar de Flávio Bolsonaro' },
-  lula: { name: 'Luiz Inácio Lula da Silva', color: '#ff1e42', initials: 'L', imagePath: '/candidates/luiz-inacio-lula-da-silva.svg', alt: 'Avatar de Luiz Inácio Lula da Silva' },
+  flavio: { name: 'Flávio Bolsonaro', color: '#0055ff', initials: 'FB', imagePath: '/candidates/flavio-bolsonaro.png', alt: 'Foto de Flávio Bolsonaro' },
+  lula: { name: 'Luiz Inácio Lula da Silva', color: '#ff1e42', initials: 'L', imagePath: '/candidates/luiz-inacio-lula-da-silva.png', alt: 'Foto de Luiz Inácio Lula da Silva' },
 } as const;
 
 export const mapTheme = {

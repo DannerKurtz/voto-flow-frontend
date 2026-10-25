@@ -243,6 +243,7 @@ button,input,select {
 .candidate-photo img {
   height:100%;
   object-fit:cover;
+  object-position:center 28%;
   width:100%;
 }
 .candidate-photo span {

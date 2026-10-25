@@ -32,7 +32,7 @@ O frontend não inclui dados de demonstração: todos os resultados apresentados
 
 O mapa é um SVG local gerado a partir da [API de Malhas do IBGE](https://servicodados.ibge.gov.br/api/docs/malhas?versao=3), sem biblioteca de mapas ou GeoJSON em runtime.
 
-Os avatares em `public/candidates/` são neutros. Antes de publicar, substitua-os por fotos locais e autorizadas, ajustando os caminhos e textos alternativos em `app/lib/theme.ts` quando necessário.
+As fotos dos candidatos ficam em `public/candidates/` e são servidas localmente, sem hotlink. Os caminhos e textos alternativos estão configurados em `app/lib/theme.ts`.
 
 ## Verificação
 
